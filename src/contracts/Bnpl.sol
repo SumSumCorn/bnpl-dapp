@@ -2,6 +2,8 @@ pragma solidity ^0.5.0;
 
 import "./Token.sol";
 import "./Exchange.sol";
+import "./Owned.sol";
+import "./Members.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Bnpl is Exchange {
@@ -17,7 +19,9 @@ contract Bnpl is Exchange {
     mapping(uint256 => bool) public orderFilled;
 
     // BlackList
-    mapping(address => int8) public blackList;
+    mapping(address => int8) public blackLists;
+    mapping (address => Members) public members; // 각 주소의 회원 정보
+
 
     modifier onlyOwner() { require(msg.sender == owner, 'Error, only BNPLcompay can'); _; }
 
@@ -134,7 +138,7 @@ contract Bnpl is Exchange {
 	}
 
     function blackListing(address _addr) public onlyOwner {
-        blackList[_addr] = 1;
+        blackLists[_addr] = 1;
         emit BlackListed(_addr);
     }
 
