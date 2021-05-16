@@ -1,0 +1,502 @@
+{
+  "contractName": "RandomNumberOraclized",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_myid",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "_result",
+          "type": "string"
+        }
+      ],
+      "name": "__callback",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_myid",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "_result",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_proof",
+          "type": "bytes"
+        }
+      ],
+      "name": "__callback",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_myid\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"_result\",\"type\":\"string\"}],\"name\":\"__callback\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_myid\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"_result\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"_proof\",\"type\":\"bytes\"}],\"name\":\"__callback\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"__callback(bytes32,string)\":{\"details\":\"The following `__callback` functions are just placeholders ideally     meant to be defined in child contract when proofs are used.     The function bodies simply silence compiler warnings.\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/mg/bnpl-dapp/src/contracts/oracle.sol\":\"RandomNumberOraclized\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/mg/bnpl-dapp/src/contracts/oracle.sol\":{\"keccak256\":\"0xd33ecf9761f8e6a1d897ddbfc434a031e053adbf2f66527841b20a1ba1d45cf2\",\"urls\":[\"bzz-raw://7e365d7d067fe7c6f7617ca47d8382c5089859784dce5d009ff8bc0e3889d19e\",\"dweb:/ipfs/QmWBCeBcyvkz555J7TCc1X6RVxDGyCrNNxoKzFAmSTcHLc\"]},\"/Users/mg/bnpl-dapp/src/contracts/oraclizeAPI_0.5.sol\":{\"keccak256\":\"0xe1c90c4ffde92374bb53483ef438ee1cbea7e2a3bd1de89f8d4ad64e8cc4c772\",\"urls\":[\"bzz-raw://6bbbb5121f0d8d508ddc5cd0a8b0f890ce606f8aef0fb7265b3ff3be7d6a7764\",\"dweb:/ipfs/QmctjmE8XF9dgg5PVxm5uEXyWHQRMgkAsqBFTx6JRBufiq\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50736f485c8bf6fc43ea212e93bbf8ce046c7f1cb475600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506102f7806100756000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c806327dc297e1461003b57806338bbfa5014610100575b600080fd5b6100fe6004803603604081101561005157600080fd5b81019080803590602001909291908035906020019064010000000081111561007857600080fd5b82018360208201111561008a57600080fd5b803590602001918460018302840111640100000000831117156100ac57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f82011690508083019250505050505050919291929050505061025c565b005b61025a6004803603606081101561011657600080fd5b81019080803590602001909291908035906020019064010000000081111561013d57600080fd5b82018360208201111561014f57600080fd5b8035906020019184600183028401116401000000008311171561017157600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290803590602001906401000000008111156101d457600080fd5b8201836020820111156101e657600080fd5b8035906020019184600183028401116401000000008311171561020857600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f82011690508083019250505050505050919291929050505061029f565b005b61029b828260006040519080825280601f01601f1916602001820160405280156102955781602001600182028038833980820191505090505b5061029f565b5050565b6000801b600360008060001b81526020019081526020016000208190555050505056fea265627a7a72315820eb3c877e6a0fbe47a5f9a88ab9faf556f9a9992a4102a4e0d19a3a2bd8ef911164736f6c63430005100032",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c806327dc297e1461003b57806338bbfa5014610100575b600080fd5b6100fe6004803603604081101561005157600080fd5b81019080803590602001909291908035906020019064010000000081111561007857600080fd5b82018360208201111561008a57600080fd5b803590602001918460018302840111640100000000831117156100ac57600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f82011690508083019250505050505050919291929050505061025c565b005b61025a6004803603606081101561011657600080fd5b81019080803590602001909291908035906020019064010000000081111561013d57600080fd5b82018360208201111561014f57600080fd5b8035906020019184600183028401116401000000008311171561017157600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f820116905080830192505050505050509192919290803590602001906401000000008111156101d457600080fd5b8201836020820111156101e657600080fd5b8035906020019184600183028401116401000000008311171561020857600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600081840152601f19601f82011690508083019250505050505050919291929050505061029f565b005b61029b828260006040519080825280601f01601f1916602001820160405280156102955781602001600182028038833980820191505090505b5061029f565b5050565b6000801b600360008060001b81526020019081526020016000208190555050505056fea265627a7a72315820eb3c877e6a0fbe47a5f9a88ab9faf556f9a9992a4102a4e0d19a3a2bd8ef911164736f6c63430005100032",
+  "sourceMap": "118:478:0:-;;;234:100;8:9:-1;5:2;;;30:1;27;20:12;5:2;234:100:0;287:42;259:3;;:71;;;;;;;;;;;;;;;;;;118:478;;;;;;",
+  "deployedSourceMap": "118:478:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;118:478:0;;;;;;;;;;;;;;;;;;;;;;;;15310:122:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;15310:122:1;;;;;;;;;;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;15310:122:1;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;15310:122:1;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;15310:122:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;15310:122:1;;;;;;;;;;;;;;;:::i;:::-;;15438:178;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;15438:178:1;;;;;;;;;;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;15438:178:1;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;15438:178:1;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;15438:178:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;15438:178:1;;;;;;;;;;;;;;;;;21:11:-1;8;5:28;2:2;;;46:1;43;36:12;2:2;15438:178:1;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;15438:178:1;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;15438:178:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;93:3;85:6;81:16;74:27;137:4;133:9;126:4;121:3;117:14;113:30;106:37;;169:3;161:6;157:16;147:26;;15438:178:1;;;;;;;;;;;;;;;:::i;:::-;;15310:122;15385:40;15396:5;15403:7;15422:1;15412:12;;;;;;;;;;;;;;;;;;;;;;;;;29:1:-1;21:6;17:14;116:4;104:10;96:6;87:34;147:4;139:6;135:17;125:27;;0:156;15412:12:1;;;;15385:10;:40::i;:::-;15310:122;;:::o;15438:178::-;15607:1;15599:10;;15562:22;:34;15593:1;15585:10;;15562:34;;;;;;;;;;;:47;;;;15438:178;;;:::o",
+  "source": "pragma solidity ^0.5.0;\n//import \"github.com/oraclize/ethereum-api/oraclizeAPI.sol\";\nimport \"./oraclizeAPI_0.5.sol\";\n\ncontract RandomNumberOraclized is usingOraclize {\n\t// uint256 public randomNumber;\n\t// bytes32 public request_id;\n\n\tconstructor() public {\n\t\tOAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);\n\t}\n\n\t// function request() public {\n\t// \trequest_id = oraclize_query(\"WolframAlpha\", \"random number between 1 and 6\");\n\t// }\n\n\t// function __callback(uint256 _result) public {\n\t// \trequire(msg.sender == oraclize_cbAddress());\n\n\t// \trandomNumber = _result;\n\t// }\n\n}",
+  "sourcePath": "/Users/mg/bnpl-dapp/src/contracts/oracle.sol",
+  "ast": {
+    "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/oracle.sol",
+    "exportedSymbols": {
+      "RandomNumberOraclized": [
+        15
+      ]
+    },
+    "id": 16,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:0"
+      },
+      {
+        "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/oraclizeAPI_0.5.sol",
+        "file": "./oraclizeAPI_0.5.sol",
+        "id": 2,
+        "nodeType": "ImportDirective",
+        "scope": 16,
+        "sourceUnit": 6312,
+        "src": "85:31:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 3,
+              "name": "usingOraclize",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 6311,
+              "src": "152:13:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_usingOraclize_$6311",
+                "typeString": "contract usingOraclize"
+              }
+            },
+            "id": 4,
+            "nodeType": "InheritanceSpecifier",
+            "src": "152:13:0"
+          }
+        ],
+        "contractDependencies": [
+          6311
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 15,
+        "linearizedBaseContracts": [
+          15,
+          6311
+        ],
+        "name": "RandomNumberOraclized",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 13,
+              "nodeType": "Block",
+              "src": "255:79:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 11,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 7,
+                      "name": "OAR",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 677,
+                      "src": "259:3:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_OraclizeAddrResolverI_$139",
+                        "typeString": "contract OraclizeAddrResolverI"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "hexValue": "307836663438354338424636666334336541323132453933424246386365303436433766316362343735",
+                          "id": 9,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "number",
+                          "lValueRequested": false,
+                          "nodeType": "Literal",
+                          "src": "287:42:0",
+                          "subdenomination": null,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          },
+                          "value": "0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address_payable",
+                            "typeString": "address payable"
+                          }
+                        ],
+                        "id": 8,
+                        "name": "OraclizeAddrResolverI",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 139,
+                        "src": "265:21:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_OraclizeAddrResolverI_$139_$",
+                          "typeString": "type(contract OraclizeAddrResolverI)"
+                        }
+                      },
+                      "id": 10,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "265:65:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_OraclizeAddrResolverI_$139",
+                        "typeString": "contract OraclizeAddrResolverI"
+                      }
+                    },
+                    "src": "259:71:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_OraclizeAddrResolverI_$139",
+                      "typeString": "contract OraclizeAddrResolverI"
+                    }
+                  },
+                  "id": 12,
+                  "nodeType": "ExpressionStatement",
+                  "src": "259:71:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 14,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 5,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "245:2:0"
+            },
+            "returnParameters": {
+              "id": 6,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "255:0:0"
+            },
+            "scope": 15,
+            "src": "234:100:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 16,
+        "src": "118:478:0"
+      }
+    ],
+    "src": "0:596:0"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/oracle.sol",
+      "exportedSymbols": {
+        "RandomNumberOraclized": [
+          15
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.5",
+            ".0"
+          ]
+        },
+        "id": 1,
+        "name": "PragmaDirective",
+        "src": "0:23:0"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 6312,
+          "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/oraclizeAPI_0.5.sol",
+          "file": "./oraclizeAPI_0.5.sol",
+          "scope": 16,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2,
+        "name": "ImportDirective",
+        "src": "85:31:0"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            6311
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            15,
+            6311
+          ],
+          "name": "RandomNumberOraclized",
+          "scope": 16
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": null
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "usingOraclize",
+                  "referencedDeclaration": 6311,
+                  "type": "contract usingOraclize"
+                },
+                "id": 3,
+                "name": "UserDefinedTypeName",
+                "src": "152:13:0"
+              }
+            ],
+            "id": 4,
+            "name": "InheritanceSpecifier",
+            "src": "152:13:0"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": true,
+              "kind": "constructor",
+              "modifiers": [
+                null
+              ],
+              "name": "",
+              "scope": 15,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 5,
+                "name": "ParameterList",
+                "src": "245:2:0"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 6,
+                "name": "ParameterList",
+                "src": "255:0:0"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "contract OraclizeAddrResolverI"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 677,
+                              "type": "contract OraclizeAddrResolverI",
+                              "value": "OAR"
+                            },
+                            "id": 7,
+                            "name": "Identifier",
+                            "src": "259:3:0"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "contract OraclizeAddrResolverI",
+                              "type_conversion": true
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_address_payable",
+                                      "typeString": "address payable"
+                                    }
+                                  ],
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 139,
+                                  "type": "type(contract OraclizeAddrResolverI)",
+                                  "value": "OraclizeAddrResolverI"
+                                },
+                                "id": 8,
+                                "name": "Identifier",
+                                "src": "265:21:0"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "307836663438354338424636666334336541323132453933424246386365303436433766316362343735",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "number",
+                                  "type": "address payable",
+                                  "value": "0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475"
+                                },
+                                "id": 9,
+                                "name": "Literal",
+                                "src": "287:42:0"
+                              }
+                            ],
+                            "id": 10,
+                            "name": "FunctionCall",
+                            "src": "265:65:0"
+                          }
+                        ],
+                        "id": 11,
+                        "name": "Assignment",
+                        "src": "259:71:0"
+                      }
+                    ],
+                    "id": 12,
+                    "name": "ExpressionStatement",
+                    "src": "259:71:0"
+                  }
+                ],
+                "id": 13,
+                "name": "Block",
+                "src": "255:79:0"
+              }
+            ],
+            "id": 14,
+            "name": "FunctionDefinition",
+            "src": "234:100:0"
+          }
+        ],
+        "id": 15,
+        "name": "ContractDefinition",
+        "src": "118:478:0"
+      }
+    ],
+    "id": 16,
+    "name": "SourceUnit",
+    "src": "0:596:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-05-14T14:23:49.797Z",
+  "devdoc": {
+    "methods": {
+      "__callback(bytes32,string)": {
+        "details": "The following `__callback` functions are just placeholders ideally     meant to be defined in child contract when proofs are used.     The function bodies simply silence compiler warnings."
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

@@ -1,8 +1,8 @@
 {
   "name": "bnpl-dapp",
   "version": "0.1.0",
-  "description": "Decentralized Ethereum Token Exchange",
-  "author": "dev@dappuniversity.com",
+  "description": "BNPL using ethereum",
+  "author": "nicecorntea@naver.com",
   "private": true,
   "homepage": ".",
   "engines": {

@@ -204,6 +204,8 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
    })
   })
 
+
+  /*
   describe('making orders', () => {
    let result
 
@@ -427,4 +429,5 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
       })
     })
   })
+  */
 })
