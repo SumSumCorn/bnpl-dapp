@@ -8,13 +8,19 @@ contract Bnpl is Exchange {
     using SafeMath for uint;
 
     // Variables
-    address public defiCompany;    // the account that receives exchange fees
+    address public owner;    // the account that receives exchange fees
     uint256 public feePercent; // the fee percentage
 
     mapping(uint256 => _Order) public orders;
     uint256 public orderCount;
     mapping(uint256 => bool) public orderCancelled;
     mapping(uint256 => bool) public orderFilled;
+
+    // BlackList
+    mapping(address => int8) public blackList;
+
+    modifier onlyOwner() { require(msg.sender == owner, 'Error, only BNPLcompay can'); _; }
+
 
     event Order(
         uint256 id,
@@ -47,6 +53,10 @@ contract Bnpl is Exchange {
         uint256 timestamp
     );
 
+    event BlackListed(address indexed target);
+    event DeleteFromBlacklist(address indexed target);
+
+
     // Structs
     struct _Order {
         uint256 id;
@@ -59,9 +69,9 @@ contract Bnpl is Exchange {
         uint256 timestamp;
     }
 
-    constructor (address _defiCompany, address _feeAccount, uint256 _feePercent) public {
-    	defiCompany = _defiCompany;
-        defiCompany = _feeAccount;
+    constructor (address _owner, address _feeAccount, uint256 _feePercent) public {
+    	owner = _owner;
+        owner = _feeAccount;
         feePercent = _feePercent;
     }
 
@@ -114,7 +124,7 @@ contract Bnpl is Exchange {
 
         //1 way
 		tokens[_token][_buyer] = tokens[_token][_buyer].sub(_initcost);
-		tokens[_token][defiCompany] = tokens[_token][defiCompany].add(_initcost);
+		tokens[_token][owner] = tokens[_token][owner].add(_initcost);
 		//2 way
 		tokens[_token][_seller] = tokens[_token][_seller].add(_totalPrice.sub(_feeAmount));
 
@@ -123,11 +133,12 @@ contract Bnpl is Exchange {
 
 	}
 
-    // function makeOrder(address _tokenGet, uint256 _amountGet, address _tokenGive, uint256 _amountGive) public {
-    //     orderCount = orderCount.add(1);
-    //     orders[orderCount] = _Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, now);
-    //     emit Order(orderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, now);
-    // }
+    function blackListing(address _addr) public onlyOwner {
+        blackList[_addr] = 1;
+        emit BlackListed(_addr);
+    }
+
+
 
     // function cancelOrder(uint256 _id) public {
     //     _Order storage _order = orders[_id];

@@ -27,7 +27,7 @@ contract('Bnpl', ([deployer, feeAccount, client, seller, rebalancer]) => {
 
   describe('deployment', () => {
     it('tracks the defiCompany account', async () => {
-     const result = await bnpl.defiCompany()
+     const result = await bnpl.owner()
      result.should.equal(feeAccount)
     })
 
@@ -58,57 +58,36 @@ contract('Bnpl', ([deployer, feeAccount, client, seller, rebalancer]) => {
       order.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
     })
 
-    // it('emits an "Order" event', () => {
-    //   const log = result.logs[0]
-    //   log.event.should.eq('Order')
-    //   const event = log.args
-    //   event.id.toString().should.equal('1', 'id is correct')
-    //   event.user.should.equal(user1, 'user is correct')
-    //   event.tokenGet.should.equal(token.address, 'tokenGet is correct')
-    //   event.amountGet.toString().should.equal(tokens(1).toString(), 'amountGet is correct')
-    //   event.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
-    //   event.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
-    //   event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-    // })
+    it('emits an "Order" event', () => {
+      const log = result.logs[0]
+      log.event.should.eq('Order')
+      const event = log.args
+      event.id.toString().should.equal('1', 'id is correct')
+      event.buyer.should.equal(client, 'client is correct')
+      event.seller.should.equal(seller, 'seller is correct')
+      event.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
+      event.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
+      event.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
+      event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
+    })
   })
+  
+  describe('order actions', () => {
+  })
+    // beforeEach(async () => {
+    //   // user1 deposits ether only
+    //   await exchange.depositEther({ from: user1, value: ether(1) })
+    //   // give tokens to client
+    //   await token.transfer(client, tokens(100), { from: deployer })
 
+    //   // client deposits tokens only
+    //   await token.approve(bnpl.address, tokens(100), { from: client })
+    //   await bnpl.depositToken(token.address, tokens(100), { from: client })
 
-  // describe('making orders', () => {
-  //  let result
+    //   // client makes an order to buy tokens with Ether
+    //   await bnpl.makeBnplOrder(token.address, tokens(1), ETHER_ADDRESS, ether(1), { from: user1 })
 
-  //  beforeEach(async () => {
-  //    result = await exchange.makeOrder(token.address, tokens(1), ETHER_ADDRESS, ether(1), { from: user1 })
-  //  })
-
-
-
-  //  it('emits an "Order" event', () => {
-  //    const log = result.logs[0]
-  //    log.event.should.eq('Order')
-  //    const event = log.args
-  //    event.id.toString().should.equal('1', 'id is correct')
-  //    event.user.should.equal(user1, 'user is correct')
-  //    event.tokenGet.should.equal(token.address, 'tokenGet is correct')
-  //    event.amountGet.toString().should.equal(tokens(1).toString(), 'amountGet is correct')
-  //    event.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
-  //    event.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
-  //    event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-  //  })
-  // })
-
-  // describe('order actions', () => {
-
-  //   beforeEach(async () => {
-  //     // user1 deposits ether only
-  //     await exchange.depositEther({ from: user1, value: ether(1) })
-  //     // give tokens to user2
-  //     await token.transfer(user2, tokens(100), { from: deployer })
-  //     // user2 deposits tokens only
-  //     await token.approve(exchange.address, tokens(2), { from: user2 })
-  //     await exchange.depositToken(token.address, tokens(2), { from: user2 })
-  //     // user1 makes an order to buy tokens with Ether
-  //     await exchange.makeOrder(token.address, tokens(1), ETHER_ADDRESS, ether(1), { from: user1 })
-  //   })
+    // })
 
   //   describe('filling orders', () => {
   //     let result
@@ -175,48 +154,47 @@ contract('Bnpl', ([deployer, feeAccount, client, seller, rebalancer]) => {
   //         exchange.fillOrder('1', { from: user2 }).should.be.rejectedWith(EVM_REVERT)
   //       })
   //     })
-  //   })
 
-  //   describe('cancelling orders', () => {
-  //     let result
+    // describe('cancelling orders', () => {
+    //   let result
 
-  //     describe('success', async () => {
-  //       beforeEach(async () => {
-  //         result = await exchange.cancelOrder('1', { from: user1 })
-  //       })
+    //   describe('success', async () => {
+    //     beforeEach(async () => {
+    //       result = await exchange.cancelOrder('1', { from: user1 })
+    //     })
 
-  //       it('updates cancelled orders', async () => {
-  //         const orderCancelled = await exchange.orderCancelled(1)
-  //         orderCancelled.should.equal(true)
-  //       })
+    //     it('updates cancelled orders', async () => {
+    //       const orderCancelled = await exchange.orderCancelled(1)
+    //       orderCancelled.should.equal(true)
+    //     })
 
-  //       it('emits a "Cancel" event', () => {
-  //         const log = result.logs[0]
-  //         log.event.should.eq('Cancel')
-  //         const event = log.args
-  //         event.id.toString().should.equal('1', 'id is correct')
-  //         event.user.should.equal(user1, 'user is correct')
-  //         event.tokenGet.should.equal(token.address, 'tokenGet is correct')
-  //         event.amountGet.toString().should.equal(tokens(1).toString(), 'amountGet is correct')
-  //         event.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
-  //         event.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
-  //         event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-  //       })
-  //     })
+    //     it('emits a "Cancel" event', () => {
+    //       const log = result.logs[0]
+    //       log.event.should.eq('Cancel')
+    //       const event = log.args
+    //       event.id.toString().should.equal('1', 'id is correct')
+    //       event.user.should.equal(user1, 'user is correct')
+    //       event.tokenGet.should.equal(token.address, 'tokenGet is correct')
+    //       event.amountGet.toString().should.equal(tokens(1).toString(), 'amountGet is correct')
+    //       event.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
+    //       event.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
+    //       event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
+    //     })
+    //   })
 
-  //     describe('failure', () => {
-  //       it('rejects invalid order ids', () => {
-  //         const invalidOrderId = 99999
-  //         exchange.cancelOrder(invalidOrderId, { from: user1 }).should.be.rejectedWith(EVM_REVERT)
-  //       })
+    //   describe('failure', () => {
+    //     it('rejects invalid order ids', () => {
+    //       const invalidOrderId = 99999
+    //       exchange.cancelOrder(invalidOrderId, { from: user1 }).should.be.rejectedWith(EVM_REVERT)
+    //     })
 
-  //       it('rejects unauthorized cancelations', async () => {
-  //         // Try to cancel the order from another user
-  //         await exchange.cancelOrder('1', { from: user2 }).should.be.rejectedWith(EVM_REVERT)
-  //       })
-  //     })
-  //   })
-  // })
+    //     it('rejects unauthorized cancelations', async () => {
+    //       // Try to cancel the order from another user
+    //       await exchange.cancelOrder('1', { from: user2 }).should.be.rejectedWith(EVM_REVERT)
+    //     })
+    //   })
+    // })
+  //})
 
   // describe('fillOrder()', () => {
   //   describe('Check balances after filling user1 buy Tokens order', () => {
