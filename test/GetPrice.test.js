@@ -20,8 +20,8 @@ contract('GetPrice', ([deployer, deployer2, user1, user2]) => {
 
 	describe('first', () => {
 		it('get num between 1 to 6', async () => {
-			//const num = await getPrice.randomNumber().toString()
-			//console.log(num)	
+			const num = await getPrice.randomNumber().toString()
+			console.log(num)	
 		} )
 	})
 })

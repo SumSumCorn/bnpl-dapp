@@ -13,8 +13,8 @@ contract Owned {
     modifier onlyOwner() { require(msg.sender==owner); _; }
 
     // 생성자
-    constructor() public {
-        owner = msg.sender; // 처음에 계약을 생성한 주소를 소유자로 한다
+    constructor(address _owner) public {
+        owner = _owner; // 처음에 계약을 생성한 주소를 소유자로 한다
     }
     
     // (1) 소유자 변경

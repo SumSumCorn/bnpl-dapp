@@ -10,7 +10,7 @@ require('chai')
 contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
   let token
   let exchange
-  const feePercent = 10
+  const EtherTokenRatio = 100
   const gasPrice = ether(0.00206736)
 
   beforeEach(async () => {
@@ -21,20 +21,8 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
     token.transfer(user1, tokens(100), { from: deployer })
 
     // Deploy exchange
-    exchange = await Exchange.new(feeAccount, feePercent)
-  })
-
-  describe('deployment', () => {
-   it('tracks the fee account', async () => {
-     const result = await exchange.feeAccount()
-     result.should.equal(feeAccount)
-   })
-
-   it('tracks the fee percent', async () => {
-     const result = await exchange.feePercent()
-     result.toString().should.equal(feePercent.toString())
-   })
-  })
+    exchange = await Exchange.new(deployer, EtherTokenRatio)
+  }) 
 
   describe('fallback', () => {
    it('reverts when Ether is sent', () => {
@@ -201,6 +189,46 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
    it('returns user balance', async () => {
      const result = await exchange.balanceOf(ETHER_ADDRESS, user1)
      result.toString().should.equal(ether(1).toString())
+   })
+  })
+
+  describe('making exchange orders', () => {
+    let result
+    let amount
+    beforeEach(async () => {
+      await exchange.depositEther({ from: user1, value: ether(1) })
+
+      amount = tokens(100)
+      await token.approve(exchange.address, amount, { from: deployer })
+      result = await exchange.depositToken(token.address, amount, { from: deployer })
+      amount = ether(1)
+      result = await exchange.makeExchange(token.address, ETHER_ADDRESS, amount, { from: user1 })
+    })
+
+    it('tracks the newly created order', async () => {
+      const exOrderCount = await exchange.exOrderCount()
+      exOrderCount.toString().should.equal('1')
+      const exOrder = await exchange.exOrders('1')
+      exOrder.id.toString().should.equal('1', 'id is correct')
+      exOrder.user.should.equal(user1, 'user is correct')
+      exOrder.tokenGet.should.equal(token.address, 'tokenGet is correct')
+      exOrder.amountGet.toString().should.equal(tokens(100).toString(), 'amountGet is correct')
+      exOrder.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
+      exOrder.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
+      exOrder.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
+    })
+
+    it('emits an "exOrder" event', () => {
+     const log = result.logs[0]
+     log.event.should.eq('exOrder')
+     const event = log.args
+     event.id.toString().should.equal('1', 'id is correct')
+     event.user.should.equal(user1, 'user is correct')
+     event.tokenGet.should.equal(token.address, 'tokenGet is correct')
+     event.amountGet.toString().should.equal(tokens(100).toString(), 'amountGet is correct')
+     event.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
+     event.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
+     event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
    })
   })
 

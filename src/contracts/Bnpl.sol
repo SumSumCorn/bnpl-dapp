@@ -6,7 +6,8 @@ import "./Owned.sol";
 import "./Members.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-contract Bnpl is Exchange {
+contract Bnpl {
+    /*
     using SafeMath for uint;
 
     // Variables
@@ -82,8 +83,8 @@ contract Bnpl is Exchange {
 	function makeBnplOrder
     (
         address _seller,
-        address _token, 
-        uint256 _totalPrice, 
+        address _token,
+        uint256 _totalPrice,
         uint256 _initcost, 
         uint8   _installmentPeriod
     ) public {
@@ -105,6 +106,7 @@ contract Bnpl is Exchange {
         require(_id > 0 && _id <= orderCount, 'Error, wrong id');
         require(!orderFilled[_id], 'Error, order already filled');
         require(!orderCancelled[_id], 'Error, order already cancelled');
+
 
         _Order storage _order = orders[_id];
         require(address(_order.seller) == msg.sender );
@@ -135,7 +137,14 @@ contract Bnpl is Exchange {
 		//3 way
 		// _seller give token(product) to client
 
+
 	}
+
+    // 할부체킹
+    // if (now > 30 day) 할부 함수 실행 -> 돈이 없다 -> 블랙리스트 -> 있는경우에는 할부가 끝날 때까지 이함수를 정기적으로 실행한다.
+    // block 1 -> block 2 -> block 3 timestamp 1달 뒤로 -> 테스팅
+
+
 
     function blackListing(address _addr) public onlyOwner {
         blackLists[_addr] = 1;
@@ -174,5 +183,5 @@ contract Bnpl is Exchange {
     //     emit Trade(_orderId, _user, _tokenGet, _amountGet, _tokenGive, _amountGive, msg.sender, now);
     // }
 
-
+    */
 }
