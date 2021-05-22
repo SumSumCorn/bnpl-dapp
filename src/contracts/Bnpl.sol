@@ -6,12 +6,12 @@ import "./Owned.sol";
 import "./Members.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-contract Bnpl {
-    /*
+contract Bnpl is Owned {
+    
     using SafeMath for uint;
 
     // Variables
-    address public owner;    // the account that receives exchange fees
+    address public feeAccount;
     uint256 public feePercent; // the fee percentage
 
     mapping(uint256 => _Order) public orders;
@@ -22,10 +22,6 @@ contract Bnpl {
     // BlackList
     mapping(address => int8) public blackLists;
     mapping (address => Members) public members; // 각 주소의 회원 정보
-
-
-    modifier onlyOwner() { require(msg.sender == owner, 'Error, only BNPLcompay can'); _; }
-
 
     event Order(
         uint256 id,
@@ -74,9 +70,8 @@ contract Bnpl {
         uint256 timestamp;
     }
 
-    constructor (address _owner, address _feeAccount, uint256 _feePercent) public {
-    	owner = _owner;
-        owner = _feeAccount;
+    constructor (address _owner, address _feeAccount, uint256 _feePercent) Owned(_owner) public {
+        feeAccount = _feeAccount;
         feePercent = _feePercent;
     }
 
