@@ -112,4 +112,5 @@ contract Exchange is Owned {
         
         emit exOrder(exOrderCount, msg.sender, _tokenGet, _amountGet, _tokenGive, _amountGive, now);
     }
+
 }

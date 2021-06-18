@@ -1,0 +1,500 @@
+{
+  "contractName": "Installment",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "beforeAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "afterAddress",
+          "type": "address"
+        }
+      ],
+      "name": "TransferOwnership",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_new",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"beforeAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"afterAddress\",\"type\":\"address\"}],\"name\":\"TransferOwnership\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_new\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/mg/bnpl-dapp/src/contracts/Installment.sol\":\"Installment\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/mg/bnpl-dapp/src/contracts/Installment.sol\":{\"keccak256\":\"0xcf23521316b5f7f61a28c1b16ffbc692c5cec2f26ff4760559a8b8c2e4ddd2b6\",\"urls\":[\"bzz-raw://fa2e4e3d0d7ffe89d8492fb08c38e4731080d184ad624648b4d40f084c13ed20\",\"dweb:/ipfs/QmXq2kmhiHhQrko6uXVddTFcRcwnEoorT5xjtZp1YrwKsS\"]},\"/Users/mg/bnpl-dapp/src/contracts/Owned.sol\":{\"keccak256\":\"0x4c755b9bbe96ee454cd8a6ddca55c2120da81a8ec003c3708898ba308c23ae84\",\"urls\":[\"bzz-raw://a450bb3cf74aa0978e717f864a20fae59ae77ae77ebde4d5b710949c18bccf86\",\"dweb:/ipfs/QmXH55nNYu7Y6RMGArPBdpZyYrDwHa1yfx315mYNgBSYiR\"]},\"/Users/mg/bnpl-dapp/src/contracts/Token.sol\":{\"keccak256\":\"0xdb2d1e1191a8ea4b248feda9cb3176ed69397a0d3594e3a4b92c51fd8bc327b3\",\"urls\":[\"bzz-raw://41ade4383d3cd8a2cd6cd31de2316eb9d96a74a190daee73101c6f40afd24b7f\",\"dweb:/ipfs/QmRhmZyon5VXf2XPrShNNJ3hotAsbZuQHqLZrWhvEV6eGQ\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x965012d27b4262d7a41f5028cbb30c51ebd9ecd4be8fb30380aaa7a3c64fbc8b\",\"urls\":[\"bzz-raw://1eb493553b27efd46c231a836a83ce50d215639feb97b4aac9f301d0fd034ff5\",\"dweb:/ipfs/QmbMdvSXcqGKxeeYvzF3VrWpoHQyVzMXBhzhAokF2Gdymv\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516103343803806103348339818101604052602081101561003357600080fd5b810190808051906020019092919050505080806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505061029e806100966000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80638da5cb5b1461003b578063f2fde38b14610085575b600080fd5b6100436100c9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100c76004803603602081101561009b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100ee565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461014757600080fd5b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f5c486528ec3e3f0ea91181cff8116f02bfa350e03b8b6f12e00765adbb5af85c816000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a1505056fea265627a7a72315820970d4f16aaec1bde05a8dfa6aaf22b0cacc6171c15d4a720a9404be93636565864736f6c63430005100032",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c80638da5cb5b1461003b578063f2fde38b14610085575b600080fd5b6100436100c9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100c76004803603602081101561009b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100ee565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461014757600080fd5b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f5c486528ec3e3f0ea91181cff8116f02bfa350e03b8b6f12e00765adbb5af85c816000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a1505056fea265627a7a72315820970d4f16aaec1bde05a8dfa6aaf22b0cacc6171c15d4a720a9404be93636565864736f6c63430005100032",
+  "sourceMap": "131:93:2:-;;;164:58;8:9:-1;5:2;;;30:1;27;20:12;5:2;164:58:2;;;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;164:58:2;;;;;;;;;;;;;;;;198:6;436::4;428:5;;:14;;;;;;;;;;;;;;;;;;383:129;164:58:2;131:93;;;;;;",
+  "deployedSourceMap": "131:93:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;131:93:2;;;;;;;;;;;;;;;;;;;;;;;;98:20:4;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;550:180;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;550:180:4;;;;;;;;;;;;;;;;;;;:::i;:::-;;98:20;;;;;;;;;;;;;:::o;550:180::-;348:5;;;;;;;;;;;336:17;;:10;:17;;;328:26;;;;;;618:21;642:5;;;;;;;;;;;618:29;;665:4;657:5;;:12;;;;;;;;;;;;;;;;;;684:39;702:13;717:5;;;;;;;;;;;684:39;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;356:1;550:180;:::o",
+  "source": "pragma solidity ^0.5.0;\n\nimport \"./Token.sol\";\nimport \"./Owned.sol\";\nimport \"openzeppelin-solidity/contracts/math/SafeMath.sol\";\n\n\ncontract Installment is Owned {\n\tconstructor(address _owner) Owned(_owner) public {\n\t\t//\n\t}\n}",
+  "sourcePath": "/Users/mg/bnpl-dapp/src/contracts/Installment.sol",
+  "ast": {
+    "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Installment.sol",
+    "exportedSymbols": {
+      "Installment": [
+        937
+      ]
+    },
+    "id": 938,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 922,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:2"
+      },
+      {
+        "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Token.sol",
+        "file": "./Token.sol",
+        "id": 923,
+        "nodeType": "ImportDirective",
+        "scope": 938,
+        "sourceUnit": 1459,
+        "src": "25:21:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Owned.sol",
+        "file": "./Owned.sol",
+        "id": 924,
+        "nodeType": "ImportDirective",
+        "scope": 938,
+        "sourceUnit": 1229,
+        "src": "47:21:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+        "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+        "id": 925,
+        "nodeType": "ImportDirective",
+        "scope": 938,
+        "sourceUnit": 1587,
+        "src": "69:59:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 926,
+              "name": "Owned",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1228,
+              "src": "155:5:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Owned_$1228",
+                "typeString": "contract Owned"
+              }
+            },
+            "id": 927,
+            "nodeType": "InheritanceSpecifier",
+            "src": "155:5:2"
+          }
+        ],
+        "contractDependencies": [
+          1228
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 937,
+        "linearizedBaseContracts": [
+          937,
+          1228
+        ],
+        "name": "Installment",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 935,
+              "nodeType": "Block",
+              "src": "213:9:2",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 936,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 932,
+                    "name": "_owner",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 929,
+                    "src": "198:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  }
+                ],
+                "id": 933,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 931,
+                  "name": "Owned",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 1228,
+                  "src": "192:5:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Owned_$1228_$",
+                    "typeString": "type(contract Owned)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "192:13:2"
+              }
+            ],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 930,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 929,
+                  "name": "_owner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 936,
+                  "src": "176:14:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 928,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "176:7:2",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "175:16:2"
+            },
+            "returnParameters": {
+              "id": 934,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "213:0:2"
+            },
+            "scope": 937,
+            "src": "164:58:2",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 938,
+        "src": "131:93:2"
+      }
+    ],
+    "src": "0:224:2"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Installment.sol",
+      "exportedSymbols": {
+        "Installment": [
+          937
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.5",
+            ".0"
+          ]
+        },
+        "id": 922,
+        "name": "PragmaDirective",
+        "src": "0:23:2"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1459,
+          "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Token.sol",
+          "file": "./Token.sol",
+          "scope": 938,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 923,
+        "name": "ImportDirective",
+        "src": "25:21:2"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1229,
+          "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Owned.sol",
+          "file": "./Owned.sol",
+          "scope": 938,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 924,
+        "name": "ImportDirective",
+        "src": "47:21:2"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1587,
+          "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+          "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
+          "scope": 938,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 925,
+        "name": "ImportDirective",
+        "src": "69:59:2"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            1228
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            937,
+            1228
+          ],
+          "name": "Installment",
+          "scope": 938
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": null
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Owned",
+                  "referencedDeclaration": 1228,
+                  "type": "contract Owned"
+                },
+                "id": 926,
+                "name": "UserDefinedTypeName",
+                "src": "155:5:2"
+              }
+            ],
+            "id": 927,
+            "name": "InheritanceSpecifier",
+            "src": "155:5:2"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": true,
+              "kind": "constructor",
+              "name": "",
+              "scope": 937,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_owner",
+                      "scope": 936,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 928,
+                        "name": "ElementaryTypeName",
+                        "src": "176:7:2"
+                      }
+                    ],
+                    "id": 929,
+                    "name": "VariableDeclaration",
+                    "src": "176:14:2"
+                  }
+                ],
+                "id": 930,
+                "name": "ParameterList",
+                "src": "175:16:2"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 934,
+                "name": "ParameterList",
+                "src": "213:0:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1228,
+                      "type": "type(contract Owned)",
+                      "value": "Owned"
+                    },
+                    "id": 931,
+                    "name": "Identifier",
+                    "src": "192:5:2"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 929,
+                      "type": "address",
+                      "value": "_owner"
+                    },
+                    "id": 932,
+                    "name": "Identifier",
+                    "src": "198:6:2"
+                  }
+                ],
+                "id": 933,
+                "name": "ModifierInvocation",
+                "src": "192:13:2"
+              },
+              {
+                "attributes": {
+                  "statements": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 935,
+                "name": "Block",
+                "src": "213:9:2"
+              }
+            ],
+            "id": 936,
+            "name": "FunctionDefinition",
+            "src": "164:58:2"
+          }
+        ],
+        "id": 937,
+        "name": "ContractDefinition",
+        "src": "131:93:2"
+      }
+    ],
+    "id": 938,
+    "name": "SourceUnit",
+    "src": "0:224:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2021-06-14T07:44:59.168Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
