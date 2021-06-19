@@ -7,6 +7,8 @@ const Datetime = artifacts.require("BokkyPooBahsDateTimeContract")
 
 const Members = artifacts.require("Members")
 const Merchants = artifacts.require("Merchants")
+
+const Package = artifacts.require("Package")
 //const usingOraclize = artifacts.require("usingOraclize")
 //const GetPrice = artifacts.require("GetPrice")
 
@@ -23,6 +25,8 @@ module.exports = async function(deployer) {
 
   await deployer.deploy(Members, owner)
   await deployer.deploy(Merchants, owner)
+
+  //await deployer.deploy(Package, 'Channel', 1)
 
   // const feeAccount = accounts[0]
   // const feePercent = 10

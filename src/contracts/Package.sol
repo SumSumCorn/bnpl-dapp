@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 
 contract Package {
   string public name;
+  uint256 trackingNum;
   address public manager;
 
   STATUSES public status;
@@ -12,25 +13,24 @@ contract Package {
     RECEIVED
   }
 
-  event Action(
+  event State(
     string name,
     address account,
     address manager,
     uint256 timestamp
   );
 
-  constructor(string memory _name, uint256 _price) public {
-    // Set name
+  constructor(string memory _name, uint256 _trackingNum) public {
     name = _name;
+    trackingNum = _trackingNum;
 
     // Make deployer manager
     manager = msg.sender;
 
-    // Update status to "CREATED"
     status = STATUSES.CREATED;
 
     // Log history
-    emit Action("CREATE", msg.sender, msg.sender, now);
+    emit State("CREATE", msg.sender, msg.sender, now);
   }
 
   function send(address _to) public {
@@ -51,7 +51,7 @@ contract Package {
     manager = _to;
 
     // Log history
-    emit Action("SEND", msg.sender, _to, now);
+    emit State("SEND", msg.sender, _to, now);
   }
 
   function receive() public {
@@ -66,6 +66,6 @@ contract Package {
     status = STATUSES.RECEIVED;
 
     // Log history
-    emit Action("RECEIVE", msg.sender, msg.sender, now);
+    emit State("RECEIVE", msg.sender, msg.sender, now);
   }
 }

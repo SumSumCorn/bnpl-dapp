@@ -102,7 +102,7 @@ contract Bnpl is Exchange {
         STATUSES  status;
     }
 
-    constructor (address _owner, address _feeAccount, uint _feePercent) Exchange(_owner) public {
+    constructor (address _feeAccount, uint _feePercent) Exchange(msg.sender) public {
         feeAccount = _feeAccount;
         feePercent = _feePercent;
 
