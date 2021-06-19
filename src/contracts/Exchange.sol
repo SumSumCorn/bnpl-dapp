@@ -51,8 +51,8 @@ contract Exchange is Owned {
         uint256 timestamp;
     }
 
-    constructor(address _owner, uint256 _ratio) Owned(_owner) public {
-        ratio = _ratio;
+    constructor(address _owner) Owned(_owner) public {
+        ratio = 1;
     }
 
     // Fallback: reverts if Ether is sent to this smart contract by mistake

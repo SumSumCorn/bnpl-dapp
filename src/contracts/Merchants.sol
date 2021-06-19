@@ -6,22 +6,27 @@ import "./Bnpl.sol";
 import "./BokkyPooBahsDateTimeContract.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-contract Merchant is Owned {
+contract Merchants is Owned {
   using SafeMath for uint;
 
   // product list
   // supply
   mapping(address => bool) public auth; // 판매가능자
   
-  mapping(address => mapping(uint => Product)) public Products; // 판매 리스트
+  mapping(address => mapping(uint => Product)) public products; // 판매 리스트
   
   mapping(address => uint) public prodCnt;// 판매물건갯수 카운트
 
 
   struct Product {
     string name;
+    string serial;
     uint256 price;
   }
+
+  event RegisterLicense(address licenser, address licensee);
+  event RegisterProduct(address seller, uint prodCnt);
+
 
   constructor(address _owner) Owned(_owner) public {
     //
@@ -30,25 +35,28 @@ contract Merchant is Owned {
   function registerSeller(address _seller) onlyOwner public {
     
     auth[_seller] = true;
+    emit RegisterLicense(msg.sender, _seller);
   }
 
   function isAuth(address _seller) public view returns(bool) {
     return auth[_seller];
   }
 
-  function setProduct(string memory _name, uint256 _price) public {
+  function setProduct(string memory _name, string memory _serial, uint256 _price) public {
     require(auth[msg.sender] == true);
 
     prodCnt[msg.sender] = prodCnt[msg.sender].add(1);
-    Products[msg.sender][prodCnt[msg.sender]] = Product({name: _name, price: _price});
+    products[msg.sender][prodCnt[msg.sender]] = Product({name: _name, serial: _serial, price: _price});
+
+    emit RegisterProduct(msg.sender, prodCnt[msg.sender]);
   }
 
-  function getProduct(address _seller, uint _productNum) public view returns(string memory, uint256) {
+  function getProduct(address _seller, uint _productNum) public view returns(string memory, string memory, uint256) {
     // 해당 물건이 있는가?
     require(isAuth(_seller) == true);
     require(prodCnt[_seller] >= _productNum);
 
-    return (Products[_seller][_productNum].name, Products[_seller][_productNum].price);
+    return (products[_seller][_productNum].name, products[_seller][_productNum].serial, products[_seller][_productNum].price);
   }
 
 }

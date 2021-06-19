@@ -1,20 +1,21 @@
 pragma solidity ^0.5.0;
 
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "./Owned.sol";
 import "./Token.sol";
 import "./Exchange.sol";
-import "./Owned.sol";
 import "./Members.sol";
-import "./Merchant.sol";
+import "./Merchants.sol";
 import "./BokkyPooBahsDateTimeContract.sol";
-//import "./Installment.sol";
-//import "./Product.sol";
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "./Installment.sol";
+import "./Package.sol";
 
 contract Bnpl is Exchange {
     using SafeMath for uint;
 
+    //references other contracts 
     Members public members;
-    Merchant public merchant;
+    Merchants public merchant;
     //Installment public installment;
     //Product product;
 
@@ -101,106 +102,106 @@ contract Bnpl is Exchange {
         STATUSES  status;
     }
 
-    constructor (address _owner, address _feeAccount, uint _feePercent, address _datetime) Exchange(_owner, _feePercent) public {
+    constructor (address _owner, address _feeAccount, uint _feePercent) Exchange(_owner) public {
         feeAccount = _feeAccount;
         feePercent = _feePercent;
 
-        // 멤버계약 초기화
-        members = new Members(_owner);
-        members.setBnpl(address(this));
-        members.setDatetime(_datetime);
+        // // 멤버계약 초기화
+        // members = new Members(_owner);
+        // members.setBnpl(address(this));
+        // members.setDatetime(_datetime);
 
         // 판매자계약 초기화
-        merchant = new Merchant(_owner);
+        //merchant = new Merchant(_owner);
     }
 
-	function makeBnplOrder
-    (
-        address _seller,
-        uint    _prodNum,
-        uint _qty,
-        address _token,
-        uint _initcost, 
-        uint    _installmentPeriod
-    ) public {
-        // 연체하지 않은 사람만 주문할수 있다.
-        require(members.isBlacklist(msg.sender) == false);
+	// function makeBnplOrder
+ //    (
+ //        address _seller,
+ //        uint    _prodNum,
+ //        uint _qty,
+ //        address _token,
+ //        uint _initcost, 
+ //        uint    _installmentPeriod
+ //    ) public {
+ //        // 연체하지 않은 사람만 주문할수 있다.
+ //        require(members.isBlacklist(msg.sender) == false);
 
-        require(merchant.isAuth(_seller) == true);
+ //        require(merchant.isAuth(_seller) == true);
 
-        string memory name;
-        uint prodPrice;
-        uint totalPrice;
+ //        string memory name;
+ //        uint prodPrice;
+ //        uint totalPrice;
 
-        ( , prodPrice) = merchant.getProduct(_seller, _prodNum);
-        totalPrice = _prodNum.mul(_qty);
+ //        ( , prodPrice) = merchant.getProduct(_seller, _prodNum);
+ //        totalPrice = _prodNum.mul(_qty);
 
-        orderCount = orderCount.add(1);
-        orders[orderCount] = _Order(orderCount, msg.sender, _seller, _prodNum, _qty, _token, totalPrice, _initcost, _installmentPeriod, now, STATUSES.CREATED);
-        emit Order(orderCount, msg.sender, _seller, _token, totalPrice, _initcost, _installmentPeriod, now);
-	}
+ //        orderCount = orderCount.add(1);
+ //        orders[orderCount] = _Order(orderCount, msg.sender, _seller, _prodNum, _qty, _token, totalPrice, _initcost, _installmentPeriod, now, STATUSES.CREATED);
+ //        emit Order(orderCount, msg.sender, _seller, _token, totalPrice, _initcost, _installmentPeriod, now);
+	// }
 
-	function cancelBnplOrder(uint _id) public {
-		_Order storage _order = orders[_id];
-        require(address(_order.buyer) == msg.sender || address(_order.seller) == msg.sender );
-        require(_order.id == _id); // The order must exist
+	// function cancelBnplOrder(uint _id) public {
+	// 	_Order storage _order = orders[_id];
+ //        require(address(_order.buyer) == msg.sender || address(_order.seller) == msg.sender );
+ //        require(_order.id == _id); // The order must exist
 
-        // if(_order.status == CREATED){
-        //     //
-        // }else if(_order.status == PROCESSING){
-        //     //
-        // }else { // DONE, CANCELLED
-        //     //
-        // }
+ //        // if(_order.status == CREATED){
+ //        //     //
+ //        // }else if(_order.status == PROCESSING){
+ //        //     //
+ //        // }else { // DONE, CANCELLED
+ //        //     //
+ //        // }
 
-        _order.status = STATUSES.CANCELLED;
-        //orderCancelled[_id] = true;
-        emit Cancel(_order.id, _order.buyer, _order.seller, _order.token, _order.totalPrice, _order.initcost, _order.installmentPeriod, now);
-	}
+ //        _order.status = STATUSES.CANCELLED;
+ //        //orderCancelled[_id] = true;
+ //        emit Cancel(_order.id, _order.buyer, _order.seller, _order.token, _order.totalPrice, _order.initcost, _order.installmentPeriod, now);
+	// }
 
-	function fillBnplOrder(uint _id) public onlyOwner {
-        require(_id > 0 && _id <= orderCount, 'Error, wrong id');
-        //require(!orderFilled[_id], 'Error, order already filled');
-        //require(!orderCancelled[_id], 'Error, order already cancelled');
+	// function fillBnplOrder(uint _id) public onlyOwner {
+ //        require(_id > 0 && _id <= orderCount, 'Error, wrong id');
+ //        //require(!orderFilled[_id], 'Error, order already filled');
+ //        //require(!orderCancelled[_id], 'Error, order already cancelled');
 
 
-        //require(address(_order.seller) == msg.sender, "wrong caller" );
-        _Order storage _order = orders[_id];
+ //        //require(address(_order.seller) == msg.sender, "wrong caller" );
+ //        _Order storage _order = orders[_id];
         
-        require(_order.status == STATUSES.CREATED);
+ //        require(_order.status == STATUSES.CREATED);
 
-        _bnplTrade(_order.id, _order.buyer, _order.seller, _order.token, _order.totalPrice, _order.initcost, _order.installmentPeriod, now);
-        _order.status = STATUSES.PROCESSING;
+ //        _bnplTrade(_order.id, _order.buyer, _order.seller, _order.token, _order.totalPrice, _order.initcost, _order.installmentPeriod, now);
+ //        _order.status = STATUSES.PROCESSING;
 
-        emit Fill(_order.id, _order.buyer, _order.seller, _order.token, _order.totalPrice, _order.initcost, _order.installmentPeriod, now);
-	}
+ //        emit Fill(_order.id, _order.buyer, _order.seller, _order.token, _order.totalPrice, _order.initcost, _order.installmentPeriod, now);
+	// }
 
-	function _bnplTrade
-    (   
-        uint _id, 
-        address _buyer, 
-        address _seller, 
-        address _token, 
-        uint _totalPrice,  
-        uint _initcost, 
-        uint   _installmentPeriod, 
-        uint timestamp
-    ) internal {
-		uint _feeAmount = _totalPrice.mul(feePercent).div(100);
-        //uint _ratio = exchangeAddr.ratio();
+	// function _bnplTrade
+ //    (   
+ //        uint _id, 
+ //        address _buyer, 
+ //        address _seller, 
+ //        address _token, 
+ //        uint _totalPrice,  
+ //        uint _initcost, 
+ //        uint   _installmentPeriod, 
+ //        uint timestamp
+ //    ) internal {
+	// 	uint _feeAmount = _totalPrice.mul(feePercent).div(100);
+ //        //uint _ratio = exchangeAddr.ratio();
         
-        //1 way		
-		tokens[_token][_buyer] = tokens[_token][_buyer].sub(_initcost);
-        tokens[_token][feeAccount] = tokens[_token][feeAccount].add(_initcost);
+ //        //1 way		
+	// 	tokens[_token][_buyer] = tokens[_token][_buyer].sub(_initcost);
+ //        tokens[_token][feeAccount] = tokens[_token][feeAccount].add(_initcost);
 
-        //2 way
-		tokens[_token][_seller] = tokens[_token][_seller].add(_totalPrice.sub(_feeAmount));
+ //        //2 way
+	// 	tokens[_token][_seller] = tokens[_token][_seller].add(_totalPrice.sub(_feeAmount));
 
-		//3 way
-		// _seller give product to client
+	// 	//3 way
+	// 	// _seller give product to client
         
 
-	}
+	// }
 
     
     // 할부체킹
