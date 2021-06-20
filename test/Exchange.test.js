@@ -21,7 +21,7 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
     token.transfer(user1, tokens(100), { from: deployer })
 
     // Deploy exchange
-    exchange = await Exchange.new(deployer, EtherTokenRatio)
+    exchange = await Exchange.new(deployer)
   }) 
 
   describe('fallback', () => {
@@ -212,7 +212,7 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
       exOrder.id.toString().should.equal('1', 'id is correct')
       exOrder.user.should.equal(user1, 'user is correct')
       exOrder.tokenGet.should.equal(token.address, 'tokenGet is correct')
-      exOrder.amountGet.toString().should.equal(tokens(100).toString(), 'amountGet is correct')
+      exOrder.amountGet.toString().should.equal(tokens(1).toString(), 'amountGet is correct')
       exOrder.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
       exOrder.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
       exOrder.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
@@ -225,7 +225,7 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
      event.id.toString().should.equal('1', 'id is correct')
      event.user.should.equal(user1, 'user is correct')
      event.tokenGet.should.equal(token.address, 'tokenGet is correct')
-     event.amountGet.toString().should.equal(tokens(100).toString(), 'amountGet is correct')
+     event.amountGet.toString().should.equal(tokens(1).toString(), 'amountGet is correct')
      event.tokenGive.should.equal(ETHER_ADDRESS, 'tokenGive is correct')
      event.amountGive.toString().should.equal(ether(1).toString(), 'amountGive is correct')
      event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')

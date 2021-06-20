@@ -23,8 +23,8 @@ module.exports = async function(deployer) {
 
   const owner = accounts[0]
 
-  await deployer.deploy(Members, owner)
-  await deployer.deploy(Merchants, owner)
+  await deployer.deploy(Members)
+  await deployer.deploy(Merchants)
 
   //await deployer.deploy(Package, 'Channel', 1)
 

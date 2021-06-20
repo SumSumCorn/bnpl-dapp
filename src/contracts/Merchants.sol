@@ -28,11 +28,11 @@ contract Merchants is Owned {
   event RegisterProduct(address seller, uint prodCnt);
 
 
-  constructor(address _owner) Owned(_owner) public {
+  constructor() public Owned(msg.sender) {
     //
   }
 
-  function registerSeller(address _seller) onlyOwner public {
+  function registerSeller(address _seller) public {
     
     auth[_seller] = true;
     emit RegisterLicense(msg.sender, _seller);

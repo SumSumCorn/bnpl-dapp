@@ -63,25 +63,25 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"beforeAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"afterAddress\",\"type\":\"address\"}],\"name\":\"TransferOwnership\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_new\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/mg/bnpl-dapp/src/contracts/Installment.sol\":\"Installment\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/mg/bnpl-dapp/src/contracts/Installment.sol\":{\"keccak256\":\"0xcf23521316b5f7f61a28c1b16ffbc692c5cec2f26ff4760559a8b8c2e4ddd2b6\",\"urls\":[\"bzz-raw://fa2e4e3d0d7ffe89d8492fb08c38e4731080d184ad624648b4d40f084c13ed20\",\"dweb:/ipfs/QmXq2kmhiHhQrko6uXVddTFcRcwnEoorT5xjtZp1YrwKsS\"]},\"/Users/mg/bnpl-dapp/src/contracts/Owned.sol\":{\"keccak256\":\"0x4c755b9bbe96ee454cd8a6ddca55c2120da81a8ec003c3708898ba308c23ae84\",\"urls\":[\"bzz-raw://a450bb3cf74aa0978e717f864a20fae59ae77ae77ebde4d5b710949c18bccf86\",\"dweb:/ipfs/QmXH55nNYu7Y6RMGArPBdpZyYrDwHa1yfx315mYNgBSYiR\"]},\"/Users/mg/bnpl-dapp/src/contracts/Token.sol\":{\"keccak256\":\"0xdb2d1e1191a8ea4b248feda9cb3176ed69397a0d3594e3a4b92c51fd8bc327b3\",\"urls\":[\"bzz-raw://41ade4383d3cd8a2cd6cd31de2316eb9d96a74a190daee73101c6f40afd24b7f\",\"dweb:/ipfs/QmRhmZyon5VXf2XPrShNNJ3hotAsbZuQHqLZrWhvEV6eGQ\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x965012d27b4262d7a41f5028cbb30c51ebd9ecd4be8fb30380aaa7a3c64fbc8b\",\"urls\":[\"bzz-raw://1eb493553b27efd46c231a836a83ce50d215639feb97b4aac9f301d0fd034ff5\",\"dweb:/ipfs/QmbMdvSXcqGKxeeYvzF3VrWpoHQyVzMXBhzhAokF2Gdymv\"]}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b506040516103343803806103348339818101604052602081101561003357600080fd5b810190808051906020019092919050505080806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505061029e806100966000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80638da5cb5b1461003b578063f2fde38b14610085575b600080fd5b6100436100c9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100c76004803603602081101561009b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100ee565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461014757600080fd5b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f5c486528ec3e3f0ea91181cff8116f02bfa350e03b8b6f12e00765adbb5af85c816000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a1505056fea265627a7a72315820970d4f16aaec1bde05a8dfa6aaf22b0cacc6171c15d4a720a9404be93636565864736f6c63430005100032",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c80638da5cb5b1461003b578063f2fde38b14610085575b600080fd5b6100436100c9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100c76004803603602081101561009b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100ee565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461014757600080fd5b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f5c486528ec3e3f0ea91181cff8116f02bfa350e03b8b6f12e00765adbb5af85c816000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a1505056fea265627a7a72315820970d4f16aaec1bde05a8dfa6aaf22b0cacc6171c15d4a720a9404be93636565864736f6c63430005100032",
-  "sourceMap": "131:93:2:-;;;164:58;8:9:-1;5:2;;;30:1;27;20:12;5:2;164:58:2;;;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;164:58:2;;;;;;;;;;;;;;;;198:6;436::4;428:5;;:14;;;;;;;;;;;;;;;;;;383:129;164:58:2;131:93;;;;;;",
-  "deployedSourceMap": "131:93:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;131:93:2;;;;;;;;;;;;;;;;;;;;;;;;98:20:4;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;550:180;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;550:180:4;;;;;;;;;;;;;;;;;;;:::i;:::-;;98:20;;;;;;;;;;;;;:::o;550:180::-;348:5;;;;;;;;;;;336:17;;:10;:17;;;328:26;;;;;;618:21;642:5;;;;;;;;;;;618:29;;665:4;657:5;;:12;;;;;;;;;;;;;;;;;;684:39;702:13;717:5;;;;;;;;;;;684:39;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;356:1;550:180;:::o",
-  "source": "pragma solidity ^0.5.0;\n\nimport \"./Token.sol\";\nimport \"./Owned.sol\";\nimport \"openzeppelin-solidity/contracts/math/SafeMath.sol\";\n\n\ncontract Installment is Owned {\n\tconstructor(address _owner) Owned(_owner) public {\n\t\t//\n\t}\n}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"beforeAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"afterAddress\",\"type\":\"address\"}],\"name\":\"TransferOwnership\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_new\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/mg/bnpl-dapp/src/contracts/Installment.sol\":\"Installment\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/mg/bnpl-dapp/src/contracts/Installment.sol\":{\"keccak256\":\"0x58cd70eb42c743f6ab4d02d09560e0dd4953b0d1f08d94a339b692ab685911ac\",\"urls\":[\"bzz-raw://e79bdd18808d94dd79c03a4fd34c55154d6680e16529573ae5ed21bf5b8a8938\",\"dweb:/ipfs/QmZfQ5kaoQmRkV5CH7BtkDQox9f9v9ahFXUNF5gMAsVBJc\"]},\"/Users/mg/bnpl-dapp/src/contracts/Owned.sol\":{\"keccak256\":\"0x4c755b9bbe96ee454cd8a6ddca55c2120da81a8ec003c3708898ba308c23ae84\",\"urls\":[\"bzz-raw://a450bb3cf74aa0978e717f864a20fae59ae77ae77ebde4d5b710949c18bccf86\",\"dweb:/ipfs/QmXH55nNYu7Y6RMGArPBdpZyYrDwHa1yfx315mYNgBSYiR\"]},\"/Users/mg/bnpl-dapp/src/contracts/Token.sol\":{\"keccak256\":\"0xdb2d1e1191a8ea4b248feda9cb3176ed69397a0d3594e3a4b92c51fd8bc327b3\",\"urls\":[\"bzz-raw://41ade4383d3cd8a2cd6cd31de2316eb9d96a74a190daee73101c6f40afd24b7f\",\"dweb:/ipfs/QmRhmZyon5VXf2XPrShNNJ3hotAsbZuQHqLZrWhvEV6eGQ\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x965012d27b4262d7a41f5028cbb30c51ebd9ecd4be8fb30380aaa7a3c64fbc8b\",\"urls\":[\"bzz-raw://1eb493553b27efd46c231a836a83ce50d215639feb97b4aac9f301d0fd034ff5\",\"dweb:/ipfs/QmbMdvSXcqGKxeeYvzF3VrWpoHQyVzMXBhzhAokF2Gdymv\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516103343803806103348339818101604052602081101561003357600080fd5b810190808051906020019092919050505080806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505061029e806100966000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80638da5cb5b1461003b578063f2fde38b14610085575b600080fd5b6100436100c9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100c76004803603602081101561009b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100ee565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461014757600080fd5b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f5c486528ec3e3f0ea91181cff8116f02bfa350e03b8b6f12e00765adbb5af85c816000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a1505056fea265627a7a72315820688f756347cba1faa5b494ea0bb09584dc10b495bd685199ed2a8739ca03c6ff64736f6c63430005100032",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c80638da5cb5b1461003b578063f2fde38b14610085575b600080fd5b6100436100c9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6100c76004803603602081101561009b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506100ee565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461014757600080fd5b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f5c486528ec3e3f0ea91181cff8116f02bfa350e03b8b6f12e00765adbb5af85c816000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff16604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a1505056fea265627a7a72315820688f756347cba1faa5b494ea0bb09584dc10b495bd685199ed2a8739ca03c6ff64736f6c63430005100032",
+  "sourceMap": "131:4247:4:-;;;570:58;8:9:-1;5:2;;;30:1;27;20:12;5:2;570:58:4;;;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;570:58:4;;;;;;;;;;;;;;;;604:6;436::7;428:5;;:14;;;;;;;;;;;;;;;;;;383:129;570:58:4;131:4247;;;;;;",
+  "deployedSourceMap": "131:4247:4:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;131:4247:4;;;;;;;;;;;;;;;;;;;;;;;;98:20:7;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;550:180;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;550:180:7;;;;;;;;;;;;;;;;;;;:::i;:::-;;98:20;;;;;;;;;;;;;:::o;550:180::-;348:5;;;;;;;;;;;336:17;;:10;:17;;;328:26;;;;;;618:21;642:5;;;;;;;;;;;618:29;;665:4;657:5;;:12;;;;;;;;;;;;;;;;;;684:39;702:13;717:5;;;;;;;;;;;684:39;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;356:1;550:180;:::o",
+  "source": "pragma solidity ^0.5.0;\n\nimport \"./Token.sol\";\nimport \"./Owned.sol\";\nimport \"openzeppelin-solidity/contracts/math/SafeMath.sol\";\n\n\ncontract Installment is Owned {\n  using SafeMath for uint;\n\n\t// 할부\n  uint256 remainCost;     // 앞으로 남은 할부 금액\n  uint256 remainCnt;      // 앞으로 남은 할부 횟수\n  uint256 paybackCost;    // 4주동안 내야할 금액\n  uint256 nextInstallDeadline;   // 다음 할부 결제 날짜\n\n\n  // 연체료\n  uint256 remainFee;     // 앞으로 남은 연체료\n  uint256 nextFeeDeadline;   // 다음 연체 날짜\n\n\tconstructor(address _owner) Owned(_owner) public {\n\t\t//\n\t}\n\n    // function paybackInstallment(address _token, address _buyer) public {\n  //   // nextDeadline 이랑 비교하는 것이 필요 즉 이 함수의 실행 날짜가 데드라인 날짜와 같은지 확인\n  //   // require();        \n\n  //   // 연체가 있는 동안에는 원금을 갚을 수가 없다.\n  //   require(memberInstallments[_buyer].isLate == false);\n\n  //   uint256 paycost = memberInstallments[_buyer].paybackCost;\n  //   uint256 term = 30 days;\n\n  //   // 자기 할부값보다 지금 자금이 많아야한다.\n  //   if (bnpl.balanceOf(_token,_buyer) >= paycost) {\n  //       memberInstallments[_buyer].remainCost = memberInstallments[_buyer].remainCost.sub(paycost);\n  //       memberInstallments[_buyer].nextDeadline = memberInstallments[_buyer].nextDeadline.add(term);\n  //   }\n  //   else { // 자금이 없으므로 연체가 된다.\n  //       memberInstallments[_buyer].isLate = true;\n\n  //       // 수수료는 하루 당 0.03% 로 책정\n  //       uint256 initfee = memberInstallments[_buyer].remainCost.mul(3).div(1000);\n  //       term = 1 days;\n\n  //       memberLatefees[_buyer] = Latefee({\n  //           remainFee : initfee,\n  //           nextDeadline : memberInstallments[_buyer].nextDeadline.add(term) \n  //       });\n  //   }\n  // }\n\n  // function paybackLatefee(address _token, address _buyer, uint256 paybackFee) public {\n  //     // 이 함수를 실행한 시간은 언제나 가능하다\n\n  //     // 이 함수는 buyer 만 가능하다\n  //     require(msg.sender == _buyer);\n\n  //     // 연체료가 있을 때에만 실행가능\n  //     require(memberInstallments[_buyer].isLate);\n  //     // 연체료보다 지갑에 든게 많아야한다.\n  //     require(bnpl.balanceOf(_token,_buyer) >= paybackFee \n  //         && memberLatefees[_buyer].remainFee >= paybackFee);\n\n  //     memberLatefees[_buyer].remainFee = memberLatefees[_buyer].remainFee.sub(paybackFee);\n\n  //     // 연체료 다 갚은 경우\n  //     if(memberLatefees[_buyer].remainFee == 0) {\n  //         memberInstallments[_buyer].isLate = false;\n  //     }\n  // }\n\n  // function raiseLatefee(address _buyer) public {\n  //     // 이 함수의 실행 시간은 nextdeadline 과 같은 날짜에만 실행이 가능하다.\n\n  //     uint256 addFee = memberLatefees[_buyer].remainFee.mul(3).div(1000);\n  //     uint256 term = 1 days;\n\n  //     memberLatefees[_buyer].remainFee = memberLatefees[_buyer].remainFee.add(addFee);\n  //     memberLatefees[_buyer].nextDeadline = memberLatefees[_buyer].nextDeadline.add(term);\n  // }\n\n  // function getMemberRank(address _member) public view returns (RANK memberRank) {\n  //   return memberInfos[_member].rank;\n  // }\n\n\n \n  // function editStatus(uint256 _index, string memory _name, uint256 _times, uint256 _sum, uint8 _rate) public {\n  //     if (_index < rank.length) {\n  //         rank[_index].name = _name;\n  //         rank[_index].times = _times;\n  //         rank[_index].sum = _sum;\n  //         rank[_index].rate = _rate;\n  //     }\n  // }\n   \n  // function updateHistory(address _member, uint256 _value) public {\n  //     bnplHistory[_member].times += 1;\n  //     bnplHistory[_member].sum += _value;\n  //     // 새로운 회원 등급 결정(거래마다 실행)\n  //     uint256 index;\n  //     uint8 tmprate;\n  //     for (uint i = 0; i < rank.length; i++) {\n  //         // 최저 거래 횟수, 최저 거래 금액 충족 시 가장 캐시백 비율이 좋은 등급으로 설정\n  //         if (bnplHistory[_member].times >= rank[i].times &&\n  //             bnplHistory[_member].sum >= rank[i].sum &&\n  //             tmprate < rank[i].rate) {\n  //             index = i;\n  //         }\n  //     }\n  //     bnplHistory[_member].rankIndex = index;\n  // }\n\n   \n\n\n}",
   "sourcePath": "/Users/mg/bnpl-dapp/src/contracts/Installment.sol",
   "ast": {
     "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Installment.sol",
     "exportedSymbols": {
       "Installment": [
-        937
+        2990
       ]
     },
-    "id": 938,
+    "id": 2991,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 922,
+        "id": 2960,
         "literals": [
           "solidity",
           "^",
@@ -89,38 +89,38 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:2"
+        "src": "0:23:4"
       },
       {
         "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Token.sol",
         "file": "./Token.sol",
-        "id": 923,
+        "id": 2961,
         "nodeType": "ImportDirective",
-        "scope": 938,
-        "sourceUnit": 1459,
-        "src": "25:21:2",
+        "scope": 2991,
+        "sourceUnit": 3843,
+        "src": "25:21:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Owned.sol",
         "file": "./Owned.sol",
-        "id": 924,
+        "id": 2962,
         "nodeType": "ImportDirective",
-        "scope": 938,
-        "sourceUnit": 1229,
-        "src": "47:21:2",
+        "scope": 2991,
+        "sourceUnit": 3478,
+        "src": "47:21:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
         "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
-        "id": 925,
+        "id": 2963,
         "nodeType": "ImportDirective",
-        "scope": 938,
-        "sourceUnit": 1587,
-        "src": "69:59:2",
+        "scope": 2991,
+        "sourceUnit": 10267,
+        "src": "69:59:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -130,44 +130,227 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 926,
+              "id": 2964,
               "name": "Owned",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1228,
-              "src": "155:5:2",
+              "referencedDeclaration": 3477,
+              "src": "155:5:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Owned_$1228",
+                "typeIdentifier": "t_contract$_Owned_$3477",
                 "typeString": "contract Owned"
               }
             },
-            "id": 927,
+            "id": 2965,
             "nodeType": "InheritanceSpecifier",
-            "src": "155:5:2"
+            "src": "155:5:4"
           }
         ],
         "contractDependencies": [
-          1228
+          3477
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 937,
+        "id": 2990,
         "linearizedBaseContracts": [
-          937,
-          1228
+          2990,
+          3477
         ],
         "name": "Installment",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
+            "id": 2968,
+            "libraryName": {
+              "contractScope": null,
+              "id": 2966,
+              "name": "SafeMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 10266,
+              "src": "171:8:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeMath_$10266",
+                "typeString": "library SafeMath"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "165:24:4",
+            "typeName": {
+              "id": 2967,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "184:4:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "id": 2970,
+            "name": "remainCost",
+            "nodeType": "VariableDeclaration",
+            "scope": 2990,
+            "src": "204:18:4",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2969,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "204:7:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2972,
+            "name": "remainCnt",
+            "nodeType": "VariableDeclaration",
+            "scope": 2990,
+            "src": "264:17:4",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2971,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "264:7:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2974,
+            "name": "paybackCost",
+            "nodeType": "VariableDeclaration",
+            "scope": 2990,
+            "src": "324:19:4",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2973,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "324:7:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2976,
+            "name": "nextInstallDeadline",
+            "nodeType": "VariableDeclaration",
+            "scope": 2990,
+            "src": "381:27:4",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2975,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "381:7:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2978,
+            "name": "remainFee",
+            "nodeType": "VariableDeclaration",
+            "scope": 2990,
+            "src": "462:17:4",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2977,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "462:7:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2980,
+            "name": "nextFeeDeadline",
+            "nodeType": "VariableDeclaration",
+            "scope": 2990,
+            "src": "517:23:4",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2979,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "517:7:4",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
             "body": {
-              "id": 935,
+              "id": 2988,
               "nodeType": "Block",
-              "src": "213:9:2",
+              "src": "619:9:4",
               "statements": []
             },
             "documentation": null,
-            "id": 936,
+            "id": 2989,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
@@ -175,49 +358,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 932,
+                    "id": 2985,
                     "name": "_owner",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 929,
-                    "src": "198:6:2",
+                    "referencedDeclaration": 2982,
+                    "src": "604:6:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 933,
+                "id": 2986,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 931,
+                  "id": 2984,
                   "name": "Owned",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1228,
-                  "src": "192:5:2",
+                  "referencedDeclaration": 3477,
+                  "src": "598:5:4",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Owned_$1228_$",
+                    "typeIdentifier": "t_type$_t_contract$_Owned_$3477_$",
                     "typeString": "type(contract Owned)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "192:13:2"
+                "src": "598:13:4"
               }
             ],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 930,
+              "id": 2983,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 929,
+                  "id": 2982,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 936,
-                  "src": "176:14:2",
+                  "scope": 2989,
+                  "src": "582:14:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -225,10 +408,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 928,
+                    "id": 2981,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "176:7:2",
+                    "src": "582:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -239,33 +422,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "175:16:2"
+              "src": "581:16:4"
             },
             "returnParameters": {
-              "id": 934,
+              "id": 2987,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "213:0:2"
+              "src": "619:0:4"
             },
-            "scope": 937,
-            "src": "164:58:2",
+            "scope": 2990,
+            "src": "570:58:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 938,
-        "src": "131:93:2"
+        "scope": 2991,
+        "src": "131:4247:4"
       }
     ],
-    "src": "0:224:2"
+    "src": "0:4378:4"
   },
   "legacyAST": {
     "attributes": {
       "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Installment.sol",
       "exportedSymbols": {
         "Installment": [
-          937
+          2990
         ]
       }
     },
@@ -279,69 +462,69 @@
             ".0"
           ]
         },
-        "id": 922,
+        "id": 2960,
         "name": "PragmaDirective",
-        "src": "0:23:2"
+        "src": "0:23:4"
       },
       {
         "attributes": {
-          "SourceUnit": 1459,
+          "SourceUnit": 3843,
           "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Token.sol",
           "file": "./Token.sol",
-          "scope": 938,
+          "scope": 2991,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 923,
+        "id": 2961,
         "name": "ImportDirective",
-        "src": "25:21:2"
+        "src": "25:21:4"
       },
       {
         "attributes": {
-          "SourceUnit": 1229,
+          "SourceUnit": 3478,
           "absolutePath": "/Users/mg/bnpl-dapp/src/contracts/Owned.sol",
           "file": "./Owned.sol",
-          "scope": 938,
+          "scope": 2991,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 924,
+        "id": 2962,
         "name": "ImportDirective",
-        "src": "47:21:2"
+        "src": "47:21:4"
       },
       {
         "attributes": {
-          "SourceUnit": 1587,
+          "SourceUnit": 10267,
           "absolutePath": "openzeppelin-solidity/contracts/math/SafeMath.sol",
           "file": "openzeppelin-solidity/contracts/math/SafeMath.sol",
-          "scope": 938,
+          "scope": 2991,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 925,
+        "id": 2963,
         "name": "ImportDirective",
-        "src": "69:59:2"
+        "src": "69:59:4"
       },
       {
         "attributes": {
           "contractDependencies": [
-            1228
+            3477
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
-            937,
-            1228
+            2990,
+            3477
           ],
           "name": "Installment",
-          "scope": 938
+          "scope": 2991
         },
         "children": [
           {
@@ -353,17 +536,200 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "Owned",
-                  "referencedDeclaration": 1228,
+                  "referencedDeclaration": 3477,
                   "type": "contract Owned"
                 },
-                "id": 926,
+                "id": 2964,
                 "name": "UserDefinedTypeName",
-                "src": "155:5:2"
+                "src": "155:5:4"
               }
             ],
-            "id": 927,
+            "id": 2965,
             "name": "InheritanceSpecifier",
-            "src": "155:5:2"
+            "src": "155:5:4"
+          },
+          {
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "SafeMath",
+                  "referencedDeclaration": 10266,
+                  "type": "library SafeMath"
+                },
+                "id": 2966,
+                "name": "UserDefinedTypeName",
+                "src": "171:8:4"
+              },
+              {
+                "attributes": {
+                  "name": "uint",
+                  "type": "uint256"
+                },
+                "id": 2967,
+                "name": "ElementaryTypeName",
+                "src": "184:4:4"
+              }
+            ],
+            "id": 2968,
+            "name": "UsingForDirective",
+            "src": "165:24:4"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "remainCost",
+              "scope": 2990,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2969,
+                "name": "ElementaryTypeName",
+                "src": "204:7:4"
+              }
+            ],
+            "id": 2970,
+            "name": "VariableDeclaration",
+            "src": "204:18:4"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "remainCnt",
+              "scope": 2990,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2971,
+                "name": "ElementaryTypeName",
+                "src": "264:7:4"
+              }
+            ],
+            "id": 2972,
+            "name": "VariableDeclaration",
+            "src": "264:17:4"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "paybackCost",
+              "scope": 2990,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2973,
+                "name": "ElementaryTypeName",
+                "src": "324:7:4"
+              }
+            ],
+            "id": 2974,
+            "name": "VariableDeclaration",
+            "src": "324:19:4"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "nextInstallDeadline",
+              "scope": 2990,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2975,
+                "name": "ElementaryTypeName",
+                "src": "381:7:4"
+              }
+            ],
+            "id": 2976,
+            "name": "VariableDeclaration",
+            "src": "381:27:4"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "remainFee",
+              "scope": 2990,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2977,
+                "name": "ElementaryTypeName",
+                "src": "462:7:4"
+              }
+            ],
+            "id": 2978,
+            "name": "VariableDeclaration",
+            "src": "462:17:4"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "nextFeeDeadline",
+              "scope": 2990,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2979,
+                "name": "ElementaryTypeName",
+                "src": "517:7:4"
+              }
+            ],
+            "id": 2980,
+            "name": "VariableDeclaration",
+            "src": "517:23:4"
           },
           {
             "attributes": {
@@ -372,7 +738,7 @@
               "isConstructor": true,
               "kind": "constructor",
               "name": "",
-              "scope": 937,
+              "scope": 2990,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -384,7 +750,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_owner",
-                      "scope": 936,
+                      "scope": 2989,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -398,19 +764,19 @@
                           "stateMutability": "nonpayable",
                           "type": "address"
                         },
-                        "id": 928,
+                        "id": 2981,
                         "name": "ElementaryTypeName",
-                        "src": "176:7:2"
+                        "src": "582:7:4"
                       }
                     ],
-                    "id": 929,
+                    "id": 2982,
                     "name": "VariableDeclaration",
-                    "src": "176:14:2"
+                    "src": "582:14:4"
                   }
                 ],
-                "id": 930,
+                "id": 2983,
                 "name": "ParameterList",
-                "src": "175:16:2"
+                "src": "581:16:4"
               },
               {
                 "attributes": {
@@ -419,9 +785,9 @@
                   ]
                 },
                 "children": [],
-                "id": 934,
+                "id": 2987,
                 "name": "ParameterList",
-                "src": "213:0:2"
+                "src": "619:0:4"
               },
               {
                 "children": [
@@ -431,13 +797,13 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 1228,
+                      "referencedDeclaration": 3477,
                       "type": "type(contract Owned)",
                       "value": "Owned"
                     },
-                    "id": 931,
+                    "id": 2984,
                     "name": "Identifier",
-                    "src": "192:5:2"
+                    "src": "598:5:4"
                   },
                   {
                     "attributes": {
@@ -445,18 +811,18 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 929,
+                      "referencedDeclaration": 2982,
                       "type": "address",
                       "value": "_owner"
                     },
-                    "id": 932,
+                    "id": 2985,
                     "name": "Identifier",
-                    "src": "198:6:2"
+                    "src": "604:6:4"
                   }
                 ],
-                "id": 933,
+                "id": 2986,
                 "name": "ModifierInvocation",
-                "src": "192:13:2"
+                "src": "598:13:4"
               },
               {
                 "attributes": {
@@ -465,24 +831,24 @@
                   ]
                 },
                 "children": [],
-                "id": 935,
+                "id": 2988,
                 "name": "Block",
-                "src": "213:9:2"
+                "src": "619:9:4"
               }
             ],
-            "id": 936,
+            "id": 2989,
             "name": "FunctionDefinition",
-            "src": "164:58:2"
+            "src": "570:58:4"
           }
         ],
-        "id": 937,
+        "id": 2990,
         "name": "ContractDefinition",
-        "src": "131:93:2"
+        "src": "131:4247:4"
       }
     ],
-    "id": 938,
+    "id": 2991,
     "name": "SourceUnit",
-    "src": "0:224:2"
+    "src": "0:4378:4"
   },
   "compiler": {
     "name": "solc",
@@ -490,7 +856,7 @@
   },
   "networks": {},
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-06-14T07:44:59.168Z",
+  "updatedAt": "2021-06-20T04:27:17.283Z",
   "devdoc": {
     "methods": {}
   },
