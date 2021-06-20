@@ -1,7 +1,7 @@
 import { tokens, ether, EVM_REVERT, ETHER_ADDRESS } from './helpers'
 
 const Members = artifacts.require('./Members')
-
+const Bnpl = artifacts.require('./Bnpl')
 require('chai')
   .use(require('chai-as-promised'))
   .should()
@@ -11,7 +11,8 @@ contract('Members', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) =
   let result
 
   beforeEach(async () => {
-    members = await Members.new({from:bnplCompany})
+    bnpl = await Bnpl.new({bnplCompany})
+    members = await Members.new(bnpl, {from:bnplCompany})
   })
 
   describe('creation', async () => {

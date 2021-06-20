@@ -58,22 +58,17 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
       assert.notEqual(bnpl.address, null)
       assert.notEqual(bnpl.address, undefined)
 
-      // // members
-      // assert.notEqual(merchants.address, 0x0)
-      // assert.notEqual(merchants.address, '')
-      // assert.notEqual(merchants.address, null)
-      // assert.notEqual(merchants.address, undefined)
+      // members
+      assert.notEqual(bnpl.merchants, 0x0)
+      assert.notEqual(bnpl.merchants, '')
+      assert.notEqual(bnpl.merchants, null)
+      assert.notEqual(bnpl.merchants, undefined)
 
-      // // merchants
-      // assert.notEqual(members.address, 0x0)
-      // assert.notEqual(members.address, '')
-      // assert.notEqual(members.address, null)
-      // assert.notEqual(members.address, undefined)
-      //console.log(bnpl.registerMerchant(seller))
-
-      //result = await bnpl.registerMerchant(seller, { from:bnplCompany })
-      //console.log(await bnpl.merchants(Merchants.isAuth()))
-      result = await bnpl.registerMerchant(seller)
+      // merchants
+      assert.notEqual(bnpl.members, 0x0)
+      assert.notEqual(bnpl.members, '')
+      assert.notEqual(bnpl.members, null)
+      assert.notEqual(bnpl.members, undefined)
     })
   })
 
@@ -98,40 +93,49 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
     })
   })
 
-  // describe('making orders', () => {
-  //   let result
-  //   beforeEach(async () => {
-  //     result = await bnpl.makeBnplOrder(seller, token.address, tokens(10), tokens(5), 1, { from : buyer })
-  //   })
+  describe('init bnplinfo', () => {
+    let result
+    it('initialize infomation about buyer', async () => {
+      result = await bnpl.registerMember({ from:buyer })
+    })
+  })
 
-  //   // it('tracks the newly created order', async () => {
-  //   //   const orderCount = await bnpl.orderCount()
-  //   //   orderCount.toString().should.equal('1')
+  describe('making bnplOrders', () => {
+    let result
+    beforeEach(async () => {
+      result = await bnpl.
 
-  //   //   const order = await bnpl.orders('1')
-  //   //   order.id.toString().should.equal('1', 'id is correct')
-  //   //   order.buyer.should.equal(buyer, 'buyer is correct')
-  //   //   order.seller.should.equal(seller, 'seller is correct')
-  //   //   order.token.should.equal(token.address, 'token is correct')
-  //   //   order.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
-  //   //   order.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
-  //   //   order.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
-  //   //   order.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-  //   // })
+      result = await bnpl.makeBnplOrder(seller, token.address, tokens(10), tokens(5), 1, { from : buyer })
+    })
 
-  //   // it('emits an "Order" event', () => {
-  //   //   const log = result.logs[0]
-  //   //   log.event.should.eq('Order')
-  //   //   const event = log.args
-  //   //   event.id.toString().should.equal('1', 'id is correct')
-  //   //   event.buyer.should.equal(buyer, 'buyer is correct')
-  //   //   event.seller.should.equal(seller, 'seller is correct')
-  //   //   event.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
-  //   //   event.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
-  //   //   event.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
-  //   //   event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-  //   // })
-  // })
+    // it('tracks the newly created order', async () => {
+    //   const orderCount = await bnpl.orderCount()
+    //   orderCount.toString().should.equal('1')
+
+    //   const order = await bnpl.orders('1')
+    //   order.id.toString().should.equal('1', 'id is correct')
+    //   order.buyer.should.equal(buyer, 'buyer is correct')
+    //   order.seller.should.equal(seller, 'seller is correct')
+    //   order.token.should.equal(token.address, 'token is correct')
+    //   order.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
+    //   order.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
+    //   order.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
+    //   order.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
+    // })
+
+    // it('emits an "Order" event', () => {
+    //   const log = result.logs[0]
+    //   log.event.should.eq('Order')
+    //   const event = log.args
+    //   event.id.toString().should.equal('1', 'id is correct')
+    //   event.buyer.should.equal(buyer, 'buyer is correct')
+    //   event.seller.should.equal(seller, 'seller is correct')
+    //   event.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
+    //   event.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
+    //   event.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
+    //   event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
+    // })
+  })
   
   // describe('order actions', () => {
   //   let result

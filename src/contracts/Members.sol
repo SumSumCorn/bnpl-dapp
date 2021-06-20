@@ -2,10 +2,10 @@ pragma solidity ^0.5.0;
 
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "./Owned.sol";
+import "./TwoOwned.sol";
 
 
-contract Members is Owned {
+contract Members is TwoOwned {
   using SafeMath for uint;
 
   enum RANK {
@@ -54,7 +54,7 @@ contract Members is Owned {
     RANK rank; // 등급 인덱스
   }
 
-  constructor() public Owned(msg.sender) {
+  constructor(address _bnpl) public TwoOwned(msg.sender, _bnpl) {
       // 등급명
       // 최저 거래 회수
       // 최저 거래 금액
@@ -94,10 +94,10 @@ contract Members is Owned {
     string memory _accountNumber
   ) public onlyOwner {
     memberInfos[_member] = MemberInfo(_name, _socialNumber, _phoneNumber, _bankName, _accountNumber);
-    _initMemberBnplInfo(_member);
+    initMemberBnplInfo(_member);
   }
 
-  function _initMemberBnplInfo(address _member) internal {
+  function initMemberBnplInfo(address _member) public onlyOwner {
     memberBnpls[_member] = memberBnpl(BNPLSTAT.NONE, 0, 0, 0, RANK.BRONZE);
   }
 
@@ -114,6 +114,10 @@ contract Members is Owned {
 
   function getMemberStat(address _buyer) public view returns(BNPLSTAT) {
     return memberBnpls[_buyer].stat;
+  }
+
+  function canMemberBnpl(address _buyer) public view returns(bool) {
+    return memberBnpls[_buyer].stat == BNPLSTAT.NONE;
   }
 
   // 끝마치면 stat 과 등급을 체크한다.

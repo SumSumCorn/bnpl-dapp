@@ -118,10 +118,10 @@ contract Bnpl is Exchange {
     ORDERSTATS  status;
   } 
 
-  constructor (address _members, address _merchants) Exchange(msg.sender) public {
+  constructor () Exchange(msg.sender) public {
     
-    members = Members(_members);
-    merchants = Merchants(_merchants);
+    members = new Members(address(this));
+    merchants = new Merchants(address(this));
   }
 
   function setFee(address _feeAccount, uint _feePercent) public onlyOwner {
@@ -145,56 +145,61 @@ contract Bnpl is Exchange {
     dateTime = BokkyPooBahsDateTimeContract(_dateTime);
   }
 
+  function registerMember() public {
+    members.initMemberBnplInfo(msg.sender);
+  }
+
+  function makeBnplOrder
+  (
+    address _seller,
+    uint    _prodNum,
+    uint    _qty,
+    address _token,
+    uint    _initcost
+  ) public {
+    // 연체하지 않은 사람만 주문할수 있다.
+    require(members.canMemberBnpl(msg.sender) == true);
+    require(merchants.isAuth(_seller) == true);
+
+    // // initcost 보다 많이 있어야한다.
+    // require(_initcost <= tokens[_token][msg.sender]);
+
+    // // installment period 체크 member에서 등급따라 할수있는것
+    // require(members.memberInfos[msg.sender].rank);
+
+    // // 처음 init 은 받는다.
+    // tokens[_token][msg.sender] = tokens[_token][msg.sender].add(_initcost);
+    // tokens[_token][payee] = tokens[_token][payee].add(_initcost);
+
+    // string memory _name;
+    // string memory _serial;
+    // uint _prodPrice;
+    // uint _totalPrice;
+
+    // (_name, _serial, _prodPrice) = merchants.getProduct(_seller, _prodNum);
+    // _totalPrice = _prodPrice.mul(_qty);
+
+    // orderCount = orderCount.add(1);
+
+    // // struct _Order {
+    // //   uint    id;
+    // //   address buyer;
+    // //   address seller;
+    // //   uint    productNum;
+    // //   uint    qty;
+    // //   address token;
+    // //   uint    initcost;
+    // //   uint    initimestamp;
+    // //   STATUSES  status;
+    // // } 
+
+    // orders[orderCount] = _Order(orderCount, msg.sender, _seller, _prodNum, _qty, _token, _totalPrice, _initcost, now, STATUSES.CREATED);
+    // emit Order(orderCount, msg.sender, _seller, _token, _totalPrice, _initcost, now);
+  }
+
 }
 
-	// function makeBnplOrder
- //  (
- //    address _seller,
- //    uint    _prodNum,
- //    uint    _qty,
- //    address _token,
- //    uint    _initcost
- //  ) public {
- //    // 연체하지 않은 사람만 주문할수 있다.
- //    //require(members.isBlacklist(msg.sender) == false);
-
- //    require(merchants.isAuth(_seller) == true);
-
- //    // initcost 보다 많이 있어야한다.
- //    require(_initcost <= tokens[_token][msg.sender]);
-
- //    // installment period 체크 member에서 등급따라 할수있는것
- //    require(members.memberInfos[msg.sender].rank);
-
- //    // 처음 init 은 받는다.
- //    tokens[_token][msg.sender] = tokens[_token][msg.sender].add(_initcost);
- //    tokens[_token][payee] = tokens[_token][payee].add(_initcost);
-
- //    string memory _name;
- //    string memory _serial;
- //    uint _prodPrice;
- //    uint _totalPrice;
-
- //    (_name, _serial, _prodPrice) = merchants.getProduct(_seller, _prodNum);
- //    _totalPrice = _prodPrice.mul(_qty);
-
- //    orderCount = orderCount.add(1);
-
- //    // struct _Order {
- //    //   uint    id;
- //    //   address buyer;
- //    //   address seller;
- //    //   uint    productNum;
- //    //   uint    qty;
- //    //   address token;
- //    //   uint    initcost;
- //    //   uint    initimestamp;
- //    //   STATUSES  status;
- //    // } 
-
- //    orders[orderCount] = _Order(orderCount, msg.sender, _seller, _prodNum, _qty, _token, _totalPrice, _initcost, now, STATUSES.CREATED);
- //    emit Order(orderCount, msg.sender, _seller, _token, _totalPrice, _initcost, now);
-	// }
+	
 
  //  function makePackage(uint id) public {
  //    // 유효한 id 인지 확인

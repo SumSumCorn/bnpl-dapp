@@ -1,12 +1,12 @@
 pragma solidity ^0.5.0;
 
-import "./Owned.sol";
+import "./TwoOwned.sol";
 import "./Token.sol";
 import "./Bnpl.sol";
 import "./BokkyPooBahsDateTimeContract.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-contract Merchants is Owned {
+contract Merchants is TwoOwned {
   using SafeMath for uint;
 
   // product list
@@ -28,7 +28,7 @@ contract Merchants is Owned {
   event RegisterProduct(address seller, uint prodCnt);
 
 
-  constructor() public Owned(msg.sender) {
+  constructor(address _bnpl) public TwoOwned(msg.sender, _bnpl) {
     //
   }
 
