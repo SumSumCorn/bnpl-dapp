@@ -164,7 +164,7 @@ contract Bnpl is Exchange {
     // // initcost 보다 많이 있어야한다.
     require(_initCost <= tokens[_token][msg.sender], 'have enough money');
 
-    // 처음 init 은 받는다.
+    // 처음 init 은 받는다. (1way)
     tokens[_token][msg.sender] = tokens[_token][msg.sender].sub(_initCost);
     tokens[_token][payee] = tokens[_token][payee].add(_initCost);
 
@@ -228,20 +228,46 @@ contract Bnpl is Exchange {
   }
   // it is only for testing!!
   function orderTimeSub(uint _id) public {
+    // 유효한 주문 번호여야 한다.
+    require(_id <= orderCount);
 
+    _Order storage order = orders[_id];
+
+    uint timeMachine = order.timestamp;
+    timeMachine = dateTime.subDays(timeMachine, 2);
+    order.timestamp = timeMachine;
   }
 
-  function isSellerAccepted(uint _id) public {
-    // 
+  function manageWay1and2(uint _id) public {
+    // 유효한 주문 번호여야 한다.
+    require(_id <= orderCount);
+
+    _Order storage order = orders[_id];
+    require(dateTime.addDays(order.timestamp,1) < now, 'must execute in time!');
+
+
+    // seller에게 보내줌 (2way) 
+    if(order.orderStat == ORDERSTATS.LOADED){
+      tokens[_token][msg.sender] = tokens[_token][msg.sender].sub(_initCost);
+      tokens[_token][payee] = tokens[_token][payee].add(_initCost);
+    }else{
+      _cancelOrder(_id);
+    }
   }
 
-  function cancelOrder(uint _id) public {
+  function _cancelOrder(uint _id) internal {
     //
-    _refund(_id);
+    _Order storage order = orders[_id];
+
+    order.orderStat == ORDERSTATS.CANCELLED;
+    _refund(_id, order.token, order.buyer, order.seller, order.initCost);
   }
 
-  function _refund(uint _id) internal {
-    //
+  function _refund(uint _id, address _token, address _buyer, address _payee, uint _initCost) internal {
+    _Order storage order = orders[_id];
+
+    tokens[_token][_buyer] = tokens[_token][_buyer].add(_initCost);
+    tokens[_token][_payee] = tokens[_token][_payee].payee(_initCost);
   }
 
   function packageSend() public {
@@ -252,11 +278,11 @@ contract Bnpl is Exchange {
     // 도착 함
   }
 
-  function checkpayback() public {
+  function checkPayback() public {
     //
   }
 
-  function executepayback() public {
+  function executePayback() public {
     //
   }
 

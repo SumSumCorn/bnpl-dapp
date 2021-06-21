@@ -134,7 +134,7 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
         tokens(500), 
         { from : buyer })
 
-      result = await bnpl.acceptOrder(1,'channel','20210622', { from:seller })
+      //result = await bnpl.acceptOrder(1,'channel','20210622', { from:seller })
 
     })
 
@@ -143,31 +143,34 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
     })
 
     describe('simulate refund protocol', () => {
+      beforeEach(async () => {
+        result = await bnpl.orderTimeSub(1);
+      })
       it('seller does not accept order', async () => {
 
       })
     })
 
-    describe('simulate payback protocol', () => {
+    // describe('simulate payback protocol', () => {
 
-      it('when buyer installment correctly', async () => {
+    //   it('when buyer installment correctly', async () => {
 
-      })
+    //   })
 
-      it('when buyer get debt', async() => {
+    //   it('when buyer get debt', async() => {
 
-      })
+    //   })
 
-    })
+    // })
 
-    describe('simulate delivery protocol', () => {
-      it('package is being deliverd', async () => {
+    // describe('simulate delivery protocol', () => {
+    //   it('package is being deliverd', async () => {
 
-      })
+    //   })
 
-      it('package has arrived', async () => {
+    //   it('package has arrived', async () => {
 
-      })
+    //   })
 
     })
     // it('tracks the newly created order', async () => {
