@@ -16,6 +16,7 @@ require('chai')
 
 contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
   let token
+  let exchange
   let datetime
   let merchants
   let members
@@ -24,6 +25,29 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
 
   const feePercent = 10
   const gasPrice = ether(0.00206736)
+
+  const RANK = {
+    BRONZE: 0,
+    SILVER: 1,
+    GOLD: 2
+  }
+
+  const BNPLSTAT = {
+    //UNENROLLED,
+    NONE: 0,
+    PROCESSING: 1,
+    LATE: 2,
+    BANNED : 3
+  }
+
+  const ORDERSTATS = {
+      CREATED: 0,    // 계약생성 -> installment 계약생성
+      LOADED: 1,     // package 계약생성
+      DONE: 2,       // 완전히 1 2 way 끝남
+      PROCESSING: 3, // installment 진행중
+      FINISHED: 4,
+      CANCELLED: 5   // package 계약 생성 안함 -> initcost 환불 -> 주문취소
+  }
 
   beforeEach(async () => {
     // Deploy token
@@ -38,12 +62,14 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
     // // Transfer some tokens to user1
     // token.transfer(buyer, tokens(100), { from: bnplCompany })
 
-    // Deploy exchange
+    exchange = await Exchange.new()
+
     bnpl = await Bnpl.new()
     bnpl.setFee(feeAccount, feePercent, { from:bnplCompany })
     bnpl.setPayee(payee, { from:bnplCompany })
 
     bnpl.setDatetime(datetime.address)
+    bnpl.setExchange(exchange.address)
 
     members = await Members.new(bnpl.address)
     merchants = await Merchants.new(bnpl.address)
@@ -109,6 +135,10 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
   describe('making bnplOrders', () => {
     let result
     let amount = tokens(1000)
+
+    const prodNum = 1
+    
+    const orderId = 1
     beforeEach(async () => {
 
       await merchants.registerSeller(seller, {from:bnplCompany})
@@ -118,8 +148,8 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
       
 
       await token.transfer(buyer, amount, { from: bnplCompany })
-      await token.approve(bnpl.address, amount, { from: buyer })
-      await bnpl.depositToken(token.address, amount, { from: buyer })
+      await token.approve(exchange.address, amount, { from: buyer })
+      await exchange.depositToken(token.address, amount, { from: buyer })
 
       // address _seller,
       // uint    _prodNum,
@@ -128,7 +158,7 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
       // uint    _initCost
       result = await bnpl.makeBnplOrder(
         seller, 
-        1,
+        prodNum,
         1,
         token.address, 
         tokens(500), 
@@ -139,29 +169,79 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
     })
 
     it('checks order no1 is correct', async () => {
+      result = await bnpl.orders(orderId)
 
+      result.id.toString().should.equal(orderId.toString())
+      result.buyer.should.equal(buyer)
+      result.seller.should.equal(seller)
+      result.productNum.toString().should.equal(prodNum.toString())
+      result.qty.toString().should.equal('1')
+      result.tokenKind.should.equal(token.address)
+      result.initCost.toString().should.equal(tokens(500).toString())
+      result.totalPrice.toString().should.equal(tokens(1000).toString())
+
+      assert.notEqual(result.installmentCon, 0x0)
+      assert.equal(result.packageCon, 0x0)
+
+      result.orderStat.toString().should.equal(ORDERSTATS.CREATED.toString())
+
+      result.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
+
+    })
+
+    it('checks after order1 is made', async () => {
+      result = await exchange.balanceOf(token.address, buyer)
+      result.toString().should.equal(tokens(500).toString())
     })
 
     describe('simulate refund protocol', () => {
       beforeEach(async () => {
-        result = await bnpl.orderTimeSub(1);
+        result = await bnpl.orderTimeSub(orderId)
       })
-      it('seller does not accept order', async () => {
+      it('stat roll back correctly', async () => {
+        result = await bnpl.manageWay1and2(prodNum)
 
+        result = await bnpl.orders(1)
+        result.orderStat.toString().should.equal(ORDERSTATS.CANCELLED.toString())
+
+        result = await members.memberBnpls(buyer)
+        result.stat.toString().should.equal(BNPLSTAT.NONE.toString())
+      })
+
+      it('buyer gets init cost', async () => {
+        const buyerOriginal = amount
+        result = await exchange.balanceOf(token.address, buyer)
+        result.toString().should.equal(tokens(500).toString())
+
+        result = await bnpl.manageWay1and2(prodNum)
+        result = await exchange.balanceOf(token.address, buyer)
+        result.toString().should.equal(buyerOriginal.toString())
       })
     })
 
-    // describe('simulate payback protocol', () => {
+    describe('simulate payback protocol', () => {
+      beforeEach(async () => {
+        result = await bnpl.acceptOrder(1,'channel','20210622', { from:seller })
+        result = await bnpl.orderTimeSub(1)
+        result = await bnpl.manageWay1and2(prodNum)
+        result = await bnpl.installTimeSub(orderId)
+      })
 
-    //   it('when buyer installment correctly', async () => {
 
-    //   })
+      it('when buyer installment correctly', async () => {
+        result = await bnpl.payback(orderId)
+      })
 
-    //   it('when buyer get debt', async() => {
+      it('when buyer get debt', async() => {
 
-    //   })
+      })
 
-    // })
+
+      it(' ready ', async () => {
+        //result = await bnpl.execPayback(orderId)
+
+      })
+    })
 
     // describe('simulate delivery protocol', () => {
     //   it('package is being deliverd', async () => {
@@ -172,7 +252,10 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
 
     //   })
 
-    })
+    // })
+
+  })
+})
     // it('tracks the newly created order', async () => {
     //   const orderCount = await bnpl.orderCount()
     //   orderCount.toString().should.equal('1')
@@ -200,7 +283,7 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
     //   event.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
     //   event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
     // })
-  })
+    //})
   
   // describe('order actions', () => {
   //   let result
@@ -265,6 +348,3 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
   //     })
   //   })
   // })
-
-
-})

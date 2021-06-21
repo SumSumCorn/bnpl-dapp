@@ -6,21 +6,27 @@ contract GetPrice is usingOraclize {
 	uint256 public randomNumber;
 	bytes32 public request_id;
 
+    event Action(uint256 result);
+
 	constructor() public {
 		OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
 	}
 
 	function request() public {
-		request_id = oraclize_query("WolframAlpha", "random number between 1 and 6");
-		request_id = oraclize_query("URL",
+		//request_id = oraclize_query("WolframAlpha", "random number between 1 and 6");
+		request_id = oraclize_query(60, "URL",
   				"json(https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=5nVgHObpKknHqEjMK1LQ0nA3CZALeAPp&searchdate=20180102&data=AP01&cur_unit=USD).0.deal_bas_r");
 
 	}
+
+    //json(https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=5nVgHObpKknHqEjMK1LQ0nA3CZALeAPp&searchdate=20180102&data=AP01&cur_unit=USD).0.deal_bas_r
 
 	function __callback(uint256 _result) public {
 		require(msg.sender == oraclize_cbAddress());
 
 		randomNumber = _result;
+
+        emit Action(randomNumber);
 	}
 
 }

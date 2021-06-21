@@ -51,7 +51,7 @@ contract Exchange is Owned {
         uint256 timestamp;
     }
 
-    constructor(address _owner) Owned(_owner) public {
+    constructor() Owned(msg.sender) public {
         ratio = 1;
     }
 
@@ -89,6 +89,11 @@ contract Exchange is Owned {
 
     function balanceOf(address _token, address _user) public view returns (uint256) {
         return tokens[_token][_user];
+    }
+
+    function depositTokenTransfer(address _token, address _from, address _to, uint256 _value) public {
+        tokens[_token][_from] = tokens[_token][_from].sub(_value);
+        tokens[_token][_to] = tokens[_token][_to].add(_value);
     }
 
     function makeExchange(address _tokenGet, address _tokenGive, uint256 _amountGive) public {

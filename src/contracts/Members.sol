@@ -72,9 +72,9 @@ contract Members is TwoOwned {
       });
       rank[uint(RANK.SILVER)] = MemberRank({
               name: "Silver",
-              times: 3,
+              times: 1,
               sum: 1000  * (money),
-              rate: 1000  * (money),
+              rate: 1500  * (money),
               installmentCount: 5
       });
       rank[uint(RANK.BRONZE)] = MemberRank({

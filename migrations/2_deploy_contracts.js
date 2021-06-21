@@ -11,8 +11,8 @@ const Merchants = artifacts.require("Merchants")
 const Package = artifacts.require("Package")
 const Installment = artifacts.require("Installment")
 
-//const usingOraclize = artifacts.require("usingOraclize")
-//const GetPrice = artifacts.require("GetPrice")
+const usingOraclize = artifacts.require("usingOraclize")
+const GetPrice = artifacts.require("GetPrice")
 
 
 //const OraclizeAPI = artifacts.require("OraclizeAPI")
@@ -22,6 +22,7 @@ module.exports = async function(deployer) {
 
   await deployer.deploy(Token)
   await deployer.deploy(Datetime)
+  await deployer.deploy(Exchange)
 
   const owner = accounts[0]
 
@@ -31,7 +32,8 @@ module.exports = async function(deployer) {
   await deployer.deploy(Merchants, Bnpl.address)
 
   
-
+  await deployer.deploy(usingOraclize)
+  await deployer.deploy(GetPrice)
   //await deployer.deploy(Package, 'Channel', 1)
 
   // const feeAccount = accounts[0]

@@ -2,6 +2,7 @@ require('babel-register');
 require('babel-polyfill');
 require('dotenv').config();
 
+
 module.exports = {
   networks: {
     development: {
@@ -9,6 +10,11 @@ module.exports = {
       port: 7545,
       network_id: "*" // Match any network id
     },
+    // gas: 500000,
+    // gasPrice: 25000000000
+      // gasPrice: 50000000000, // "Instant" setting
+      // gasPrice: 25000000000, // "Fast" setting
+      // gasPrice: 1000000000, // "Money Saver" setting
   },
   contracts_directory: './src/contracts/',
   contracts_build_directory: './src/abis/',

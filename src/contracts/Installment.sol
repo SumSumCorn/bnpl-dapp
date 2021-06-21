@@ -8,6 +8,8 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 contract Installment is Owned {
   using SafeMath for uint;
 
+  bool avail;
+
 	// 할부
   uint remainCost;     // 앞으로 남은 할부 금액
   uint remainCnt;      // 앞으로 남은 할부 횟수
@@ -29,14 +31,29 @@ contract Installment is Owned {
     remainCnt = _installmentCnt;
     paybackCost = remainCost.div(remainCnt);
     nextInstallDeadline = _timestamp;
+
+    avail = true;
 	}
 
-  function getRemainCost() public view returns(uint){
+  modifier onlyAvail() { require(avail == true); _; }
+
+  function isAvail() public view returns(bool) {
+    return avail;
+  }
+
+  function kill() public onlyOwner {
+    avail = false;
+  }
+
+  function getRemainCnt() public view onlyAvail returns(uint) {
+    return remainCnt;
+  }
+
+  function getRemainCost() public view onlyAvail returns(uint) {
     return remainCost;
   }
 
-
-  function getPaybackCost() public view returns(uint){
+  function getPaybackCost() public view onlyAvail returns(uint) {
     if(remainCnt==0)
       return 0;
 
@@ -47,31 +64,31 @@ contract Installment is Owned {
     }
   }
 
-  function getLateFeeCost() public view returns(uint){
+  function getLateFeeCost() public view onlyAvail returns(uint) {
     return remainFee;
   }
 
-  function getNextInstallDeadline() public view returns(uint) {
+  function getNextInstallDeadline() public view onlyAvail returns(uint) {
     return nextInstallDeadline;
   }
 
   // 한 달 후
-  function setNextInstallDeadline(uint _timestamp) public {
+  function setNextInstallDeadline(uint _timestamp) public onlyAvail{
     nextInstallDeadline = _timestamp;
   }
 
   // 하루 후
-  function setNextFeeDeadline(uint _timestamp) public {
+  function setNextFeeDeadline(uint _timestamp) public onlyAvail{
     nextFeeDeadline = _timestamp;
   }
 
 
-  function isLate() public view returns(bool) {
+  function isLate() public view onlyAvail returns(bool) {
     return remainFee >= 0;
   }
 
   // 정산하기
-  function balanceIntallment() public onlyOwner {
+  function balanceIntallment() public onlyOwner onlyAvail {
 
     // 정산 완료
     remainCnt = remainCnt.sub(1);
@@ -84,7 +101,7 @@ contract Installment is Owned {
   }
 
   // 연체료 정산하기
-  function balanceLateFee() public onlyOwner {
+  function balanceLateFee() public onlyOwner onlyAvail {
 
     // 정산 완료
     remainCnt = remainCnt.sub(1);
@@ -96,7 +113,7 @@ contract Installment is Owned {
 
   }
 
-  function raiseLatefee() public {
+  function raiseLatefee() public onlyAvail {
       // 이 함수의 실행 시간은 nextdeadline 과 같은 날짜에만 실행이 가능하다.
 
       uint addFee = remainCost.add(remainFee);
