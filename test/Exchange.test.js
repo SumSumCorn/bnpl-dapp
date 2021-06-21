@@ -19,7 +19,7 @@ contract('Exchange', ([deployer, feeAccount, user1, user2, rebalancer]) => {
 
     // Transfer some tokens to user1
     token.transfer(user1, tokens(100), { from: deployer })
-
+    bnpl.depositToken()
     // Deploy exchange
     exchange = await Exchange.new(deployer)
   }) 

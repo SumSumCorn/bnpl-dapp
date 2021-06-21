@@ -2,9 +2,13 @@ import { tokens, ether, EVM_REVERT, ETHER_ADDRESS } from './helpers'
 
 const Token = artifacts.require('./Token')
 const Exchange = artifacts.require('./Exchange')
+
+const Datetime = artifacts.require('./BokkyPooBahsDateTimeContract')
+
 const Bnpl = artifacts.require('./Bnpl')
 const Merchants = artifacts.require('./Merchants')
 const Members = artifacts.require('./Members')
+
 
 require('chai')
   .use(require('chai-as-promised'))
@@ -12,6 +16,7 @@ require('chai')
 
 contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
   let token
+  let datetime
   let merchants
   let members
   let bnpl
@@ -23,6 +28,7 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
   beforeEach(async () => {
     // Deploy token
     token = await Token.new()
+    datetime = await Datetime.new()
     //members = await Members.new(bnplCompany)
     //merchants = await Merchants.new(bnplCompany)
 
@@ -37,15 +43,13 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
     bnpl.setFee(feeAccount, feePercent, { from:bnplCompany })
     bnpl.setPayee(payee, { from:bnplCompany })
 
-    //bnpl.merchants().registerMerchant(seller)
-    //merchants = await bnpl.merchants
-    //bnpl.setMerchants(merchants.address, { from:bnplCompany })
-    //bnpl.setMembers(members.address, { from:bnplCompany })
+    bnpl.setDatetime(datetime.address)
 
-    //console.log(bnpl.merchants())
-    //merchants = await bnpl.merchants()
+    members = await Members.new(bnpl.address)
+    merchants = await Merchants.new(bnpl.address)
 
-
+    bnpl.setMembers(members.address)
+    bnpl.setMerchants(merchants.address)
 
   })
 
@@ -96,18 +100,76 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
   describe('init bnplinfo', () => {
     let result
     it('initialize infomation about buyer', async () => {
-      result = await bnpl.registerMember({ from:buyer })
+      result = await bnpl.registerMember(buyer, { from:bnplCompany })
     })
+
+    //event
   })
 
   describe('making bnplOrders', () => {
     let result
+    let amount = tokens(1000)
     beforeEach(async () => {
-      result = await bnpl.
 
-      result = await bnpl.makeBnplOrder(seller, token.address, tokens(10), tokens(5), 1, { from : buyer })
+      await merchants.registerSeller(seller, {from:bnplCompany})
+      await merchants.setProduct('channel','no5',amount, {from:seller})
+
+      await bnpl.registerMember(buyer, {from:bnplCompany})
+      
+
+      await token.transfer(buyer, amount, { from: bnplCompany })
+      await token.approve(bnpl.address, amount, { from: buyer })
+      await bnpl.depositToken(token.address, amount, { from: buyer })
+
+      // address _seller,
+      // uint    _prodNum,
+      // uint    _qty,
+      // address _token,
+      // uint    _initCost
+      result = await bnpl.makeBnplOrder(
+        seller, 
+        1,
+        1,
+        token.address, 
+        tokens(500), 
+        { from : buyer })
+
+      result = await bnpl.acceptOrder(1,'channel','20210622', { from:seller })
+
     })
 
+    it('checks order no1 is correct', async () => {
+
+    })
+
+    describe('simulate refund protocol', () => {
+      it('seller does not accept order', async () => {
+
+      })
+    })
+
+    describe('simulate payback protocol', () => {
+
+      it('when buyer installment correctly', async () => {
+
+      })
+
+      it('when buyer get debt', async() => {
+
+      })
+
+    })
+
+    describe('simulate delivery protocol', () => {
+      it('package is being deliverd', async () => {
+
+      })
+
+      it('package has arrived', async () => {
+
+      })
+
+    })
     // it('tracks the newly created order', async () => {
     //   const orderCount = await bnpl.orderCount()
     //   orderCount.toString().should.equal('1')

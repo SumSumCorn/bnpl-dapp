@@ -15,6 +15,7 @@ contract Members is TwoOwned {
   }
 
   enum BNPLSTAT{
+    //UNENROLLED,
     NONE,
     PROCESSING,
     LATE,
@@ -60,26 +61,27 @@ contract Members is TwoOwned {
       // 최저 거래 금액
       // 한도
       // 최대 할부 기간
+      uint money = (10 ** 18);
 
       rank[uint(RANK.GOLD)] = MemberRank({
               name: "Gold",
               times: 5,
-              sum: 2000,
-              rate: 2000,
+              sum: 2000 * (money),
+              rate: 2000  * (money), 
               installmentCount: 10
       });
       rank[uint(RANK.SILVER)] = MemberRank({
               name: "Silver",
               times: 3,
-              sum: 1000,
-              rate: 1000,
+              sum: 1000  * (money),
+              rate: 1000  * (money),
               installmentCount: 5
       });
       rank[uint(RANK.BRONZE)] = MemberRank({
               name: "Bronze",
               times: 0,
               sum: 0,
-              rate: 500,
+              rate: 500 * (money),
               installmentCount: 1
       });
   }
@@ -116,8 +118,30 @@ contract Members is TwoOwned {
     return memberBnpls[_buyer].stat;
   }
 
+  function getMemberRank(address _buyer) public view returns(RANK) {
+    return memberBnpls[_buyer].rank;
+  }
+
+  function getMemberInstallments(address _member) public view returns(uint) {
+    uint _cnt;
+
+    if(getMemberRank(_member) == RANK.BRONZE){
+      _cnt = 1;
+    }else if(getMemberRank(_member) == RANK.SILVER){
+      _cnt = 5;
+    }else{
+      _cnt = 10;
+    }
+
+    return _cnt;
+  }
+
   function canMemberBnpl(address _buyer) public view returns(bool) {
     return memberBnpls[_buyer].stat == BNPLSTAT.NONE;
+  }
+
+  function setMemberBnplStat(address _buyer, uint _set) public onlyOwner {
+    memberBnpls[_buyer].stat = BNPLSTAT(_set);
   }
 
   // 끝마치면 stat 과 등급을 체크한다.
@@ -130,14 +154,18 @@ contract Members is TwoOwned {
     RANK _rank = memberBnpls[_buyer].rank;
 
     if( _rank == RANK.GOLD) {
-      // memberBnpls[_buyer].rank = GOLD;
+      // already top
     }else if(_rank == RANK.SILVER) {
-      if ( memberBnpls[_buyer].sum >= rank[uint(RANK.GOLD)].sum){
+      if ( memberBnpls[_buyer].sum >= rank[uint(RANK.GOLD)].sum
+          && memberBnpls[_buyer].times >= rank[uint(RANK.GOLD)].times){
         memberBnpls[_buyer].rank = RANK.GOLD;
+        // emit
       }
     }else {
-      if ( memberBnpls[_buyer].sum >= rank[uint(RANK.SILVER)].sum){
+      if ( memberBnpls[_buyer].sum >= rank[uint(RANK.SILVER)].sum
+          && memberBnpls[_buyer].times >= rank[uint(RANK.SILVER)].times){
         memberBnpls[_buyer].rank = RANK.SILVER;
+        // emit
       }
     }
   }

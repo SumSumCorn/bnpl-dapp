@@ -17,9 +17,31 @@ import "./Package.sol";
 contract Bnpl is Exchange {
   using SafeMath for uint;
 
-  //reference datecontract
-  BokkyPooBahsDateTimeContract public dateTime;
+  enum RANK {
+    BRONZE,
+    SILVER,
+    GOLD
+  }
 
+  enum BNPLSTAT{
+    //UNENROLLED,
+    NONE,
+    PROCESSING,
+    LATE,
+    BANNED
+  }
+
+
+  enum ORDERSTATS {
+      CREATED,    // 계약생성 -> installment 계약생성
+      LOADED,     // package 계약생성
+      DONE,       // 완전히 bnpl 다 끝남
+      CANCELLED   // package 계약 생성 안함 -> initcost 환불 -> 주문취소
+  }
+
+  // reference datecontract
+  BokkyPooBahsDateTimeContract public dateTime;
+  // make contracts
   Members public members;
   Merchants public merchants;
 
@@ -38,12 +60,7 @@ contract Bnpl is Exchange {
 
   //STATUSES public status;
 
-  enum ORDERSTATS {
-      CREATED,    // installment 계약생성
-      LOADED,     // package 계약생성
-      DONE,       // 완전히 bnpl 다 끝남
-      CANCELLED   // bnpl 중간에 끝남
-  }
+
 
   event Fill(
       uint    id,
@@ -61,7 +78,6 @@ contract Bnpl is Exchange {
       address seller,
       address tokenkind,
       uint    totalPrice,
-      uint    initcost,
       uint    installmentPeriod,
       uint    timestamp
   );
@@ -90,23 +106,6 @@ contract Bnpl is Exchange {
   event BlackListed(address indexed target);
   event DeleteFromBlacklist(address indexed target);
 
-
-  // Structs
-  // struct _Order {
-  //     uint    id;
-  //     address buyer;
-  //     address seller;
-  //     uint    productNum;
-  //     uint    qty;
-
-  //     address token;
-  //     uint    totalPrice;
-  //     uint    initcost;
-  //     uint    installmentPeriod;
-  //     uint    timestamp;
-  //     STATUSES  status;
-  // }
-
   struct _Order {
     uint        id;
     address     buyer;
@@ -115,13 +114,14 @@ contract Bnpl is Exchange {
     uint        qty;
     Installment installmentCon;
     Package     packageCon;
-    ORDERSTATS  status;
+    ORDERSTATS  orderStat;
+    uint256     timestamp;
   } 
 
   constructor () Exchange(msg.sender) public {
     
-    members = new Members(address(this));
-    merchants = new Merchants(address(this));
+    // members = new Members(address(this));
+    // merchants = new Merchants(address(this));
   }
 
   function setFee(address _feeAccount, uint _feePercent) public onlyOwner {
@@ -133,20 +133,20 @@ contract Bnpl is Exchange {
     payee = _payee; 
   }
 
-  // function setMerchants(address _merchants) public onlyOwner {
-  //   merchants = Merchants(_merchants);
-  // }
-
-  // function setMembers(address _members) public onlyOwner {
-  //   members = Members(_members);
-  // }
-
   function setDatetime(address _dateTime) public onlyOwner {
     dateTime = BokkyPooBahsDateTimeContract(_dateTime);
   }
 
-  function registerMember() public {
-    members.initMemberBnplInfo(msg.sender);
+  function setMembers(address _members) public {
+    members = Members(_members);
+  }
+  function setMerchants(address _merchants) public {
+    merchants = Merchants(_merchants);
+  }
+
+  // 처음 bnpl 이용시 초기화한다.
+  function registerMember(address _member) public onlyOwner {
+    members.initMemberBnplInfo(_member);
   }
 
   function makeBnplOrder
@@ -155,21 +155,120 @@ contract Bnpl is Exchange {
     uint    _prodNum,
     uint    _qty,
     address _token,
-    uint    _initcost
+    uint    _initCost
   ) public {
     // 연체하지 않은 사람만 주문할수 있다.
-    require(members.canMemberBnpl(msg.sender) == true);
-    require(merchants.isAuth(_seller) == true);
+    require(members.canMemberBnpl(msg.sender) == true, 'member can bnpl');
+    require(merchants.isAuth(_seller) == true, 'seller is authorized');
 
     // // initcost 보다 많이 있어야한다.
-    // require(_initcost <= tokens[_token][msg.sender]);
+    require(_initCost <= tokens[_token][msg.sender], 'have enough money');
 
-    // // installment period 체크 member에서 등급따라 할수있는것
-    // require(members.memberInfos[msg.sender].rank);
+    // 처음 init 은 받는다.
+    tokens[_token][msg.sender] = tokens[_token][msg.sender].sub(_initCost);
+    tokens[_token][payee] = tokens[_token][payee].add(_initCost);
 
-    // // 처음 init 은 받는다.
-    // tokens[_token][msg.sender] = tokens[_token][msg.sender].add(_initcost);
-    // tokens[_token][payee] = tokens[_token][payee].add(_initcost);
+    orderCount = orderCount.add(1);
+
+    orders[orderCount] = _Order(
+      orderCount, 
+      msg.sender,
+      _seller, 
+      _prodNum,
+      _qty,
+      Installment(0x0),
+      Package(0x0),
+      ORDERSTATS.CREATED,
+      now);
+
+
+    uint totalPrice;
+    uint installmentCnt;
+    uint nextTimestamp;
+
+    ( , , totalPrice) = merchants.getProduct(_seller, _prodNum);
+    totalPrice = totalPrice.mul(_qty);
+
+    //  installment period 체크 member에서 등급따라 할수있는것
+    installmentCnt = members.getMemberInstallments(msg.sender);
+
+    nextTimestamp = dateTime.addMonths(now, 1);
+
+    orders[orderCount].installmentCon = makeInstallmentCon(_initCost, totalPrice, installmentCnt, nextTimestamp);
+
+    // msg.sender 가 bnpl 한다고 체크함
+    members.setMemberBnplStat(msg.sender, uint(BNPLSTAT.PROCESSING));
+
+    // event 생성
+    // emit Order(orderCount, msg.sender, _seller, _token, _totalPrice, _initCost, now);
+  }
+
+  function makeInstallmentCon(uint _initCost, uint _totalPrice, uint _installmentCnt, uint _nextTimestamp) public returns(Installment) {
+    return new Installment(_initCost, _totalPrice, _installmentCnt, _nextTimestamp);
+  }
+
+  function makePackageCon(string memory _name, uint256 _trackingNum) public returns(Package) {
+    return new Package(_name, _trackingNum);
+  }
+
+  // seller 가 주문을 보고 패키지를 등록함
+  function acceptOrder(uint _id, string memory _name, uint _trackingNum) public {
+    // 유효한 주문 번호여야 한다.
+    require(_id <= orderCount);
+
+    _Order storage order = orders[_id];
+
+    //msg.sender 가 _id 의 seller 와 동일하다.
+    require(msg.sender == order.seller);
+
+    order.packageCon = makePackageCon(_name, _trackingNum);
+
+    order.orderStat = ORDERSTATS.LOADED;
+
+  }
+  // it is only for testing!!
+  function orderTimeSub(uint _id) public {
+
+  }
+
+  function isSellerAccepted(uint _id) public {
+    // 
+  }
+
+  function cancelOrder(uint _id) public {
+    //
+    _refund(_id);
+  }
+
+  function _refund(uint _id) internal {
+    //
+  }
+
+  function packageSend() public {
+    // 보내는 사람이랑 패키지 주인이랑 같아야함
+  }
+
+  function packageReceived() public {
+    // 도착 함
+  }
+
+  function checkpayback() public {
+    //
+  }
+
+  function executepayback() public {
+    //
+  }
+
+  function payback() public onlyOwner {
+    //
+  }
+
+}
+
+
+    //require(members.memberInfos[msg.sender].rank);
+
 
     // string memory _name;
     // string memory _serial;
@@ -177,9 +276,7 @@ contract Bnpl is Exchange {
     // uint _totalPrice;
 
     // (_name, _serial, _prodPrice) = merchants.getProduct(_seller, _prodNum);
-    // _totalPrice = _prodPrice.mul(_qty);
 
-    // orderCount = orderCount.add(1);
 
     // // struct _Order {
     // //   uint    id;
@@ -193,11 +290,6 @@ contract Bnpl is Exchange {
     // //   STATUSES  status;
     // // } 
 
-    // orders[orderCount] = _Order(orderCount, msg.sender, _seller, _prodNum, _qty, _token, _totalPrice, _initcost, now, STATUSES.CREATED);
-    // emit Order(orderCount, msg.sender, _seller, _token, _totalPrice, _initcost, now);
-  }
-
-}
 
 	
 
@@ -297,7 +389,7 @@ contract Bnpl is Exchange {
  //        address _seller, 
  //        address _token, 
  //        uint _totalPrice,  
- //        uint _initcost, 
+ //        uint _initCost, 
  //        uint   _installmentPeriod, 
  //        uint timestamp
  //    ) internal {

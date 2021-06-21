@@ -9,26 +9,110 @@ contract Installment is Owned {
   using SafeMath for uint;
 
 	// 할부
-  uint256 remainCost;     // 앞으로 남은 할부 금액
-  uint256 remainCnt;      // 앞으로 남은 할부 횟수
-  uint256 paybackCost;    // 4주동안 내야할 금액
-  uint256 nextInstallDeadline;   // 다음 할부 결제 날짜
+  uint remainCost;     // 앞으로 남은 할부 금액
+  uint remainCnt;      // 앞으로 남은 할부 횟수
+  uint paybackCost;    // 4주동안 내야할 금액
+  uint nextInstallDeadline;   // 다음 할부 결제 날짜
 
 
   // 연체료
-  uint256 remainFee;     // 앞으로 남은 연체료
-  uint256 nextFeeDeadline;   // 다음 연체 날짜
+  uint remainFee;     // 앞으로 남은 연체료
+  uint nextFeeDeadline;   // 다음 연체 날짜
 
-	constructor(address _owner) Owned(_owner) public {
-		//
+	constructor (
+    uint _initCost, 
+    uint _totalCost, 
+    uint _installmentCnt, 
+    uint _timestamp
+  ) Owned(msg.sender) public {
+		remainCost = _totalCost.sub(_initCost);
+    remainCnt = _installmentCnt;
+    paybackCost = remainCost.div(remainCnt);
+    nextInstallDeadline = _timestamp;
 	}
+
+  function getRemainCost() public view returns(uint){
+    return remainCost;
+  }
+
+
+  function getPaybackCost() public view returns(uint){
+    if(remainCnt==0)
+      return 0;
+
+    if(remainCnt == 1){
+      return remainCost;
+    }else {
+      return paybackCost;
+    }
+  }
+
+  function getLateFeeCost() public view returns(uint){
+    return remainFee;
+  }
+
+  function getNextInstallDeadline() public view returns(uint) {
+    return nextInstallDeadline;
+  }
+
+  // 한 달 후
+  function setNextInstallDeadline(uint _timestamp) public {
+    nextInstallDeadline = _timestamp;
+  }
+
+  // 하루 후
+  function setNextFeeDeadline(uint _timestamp) public {
+    nextFeeDeadline = _timestamp;
+  }
+
+
+  function isLate() public view returns(bool) {
+    return remainFee >= 0;
+  }
+
+  // 정산하기
+  function balanceIntallment() public onlyOwner {
+
+    // 정산 완료
+    remainCnt = remainCnt.sub(1);
+    if(remainCnt == 0){
+      remainCost = remainCost.sub(paybackCost);
+    }else{
+      remainCost = remainCost.sub(paybackCost);
+    }
+
+  }
+
+  // 연체료 정산하기
+  function balanceLateFee() public onlyOwner {
+
+    // 정산 완료
+    remainCnt = remainCnt.sub(1);
+    if(remainCnt == 0){
+      remainCost = remainCost.sub(paybackCost);
+    }else{
+      remainCost = remainCost.sub(paybackCost);
+    }
+
+  }
+
+  function raiseLatefee() public {
+      // 이 함수의 실행 시간은 nextdeadline 과 같은 날짜에만 실행이 가능하다.
+
+      uint addFee = remainCost.add(remainFee);
+
+      addFee = addFee.mul(3).div(1000);
+
+      remainFee = remainFee.add(addFee);
+  }
+
+
 
     // function paybackInstallment(address _token, address _buyer) public {
   //   // nextDeadline 이랑 비교하는 것이 필요 즉 이 함수의 실행 날짜가 데드라인 날짜와 같은지 확인
   //   // require();        
 
-  //   // 연체가 있는 동안에는 원금을 갚을 수가 없다.
-  //   require(memberInstallments[_buyer].isLate == false);
+
 
   //   uint256 paycost = memberInstallments[_buyer].paybackCost;
   //   uint256 term = 30 days;
@@ -71,50 +155,6 @@ contract Installment is Owned {
   //         memberInstallments[_buyer].isLate = false;
   //     }
   // }
-
-  // function raiseLatefee(address _buyer) public {
-  //     // 이 함수의 실행 시간은 nextdeadline 과 같은 날짜에만 실행이 가능하다.
-
-  //     uint256 addFee = memberLatefees[_buyer].remainFee.mul(3).div(1000);
-  //     uint256 term = 1 days;
-
-  //     memberLatefees[_buyer].remainFee = memberLatefees[_buyer].remainFee.add(addFee);
-  //     memberLatefees[_buyer].nextDeadline = memberLatefees[_buyer].nextDeadline.add(term);
-  // }
-
-  // function getMemberRank(address _member) public view returns (RANK memberRank) {
-  //   return memberInfos[_member].rank;
-  // }
-
-
- 
-  // function editStatus(uint256 _index, string memory _name, uint256 _times, uint256 _sum, uint8 _rate) public {
-  //     if (_index < rank.length) {
-  //         rank[_index].name = _name;
-  //         rank[_index].times = _times;
-  //         rank[_index].sum = _sum;
-  //         rank[_index].rate = _rate;
-  //     }
-  // }
-   
-  // function updateHistory(address _member, uint256 _value) public {
-  //     bnplHistory[_member].times += 1;
-  //     bnplHistory[_member].sum += _value;
-  //     // 새로운 회원 등급 결정(거래마다 실행)
-  //     uint256 index;
-  //     uint8 tmprate;
-  //     for (uint i = 0; i < rank.length; i++) {
-  //         // 최저 거래 횟수, 최저 거래 금액 충족 시 가장 캐시백 비율이 좋은 등급으로 설정
-  //         if (bnplHistory[_member].times >= rank[i].times &&
-  //             bnplHistory[_member].sum >= rank[i].sum &&
-  //             tmprate < rank[i].rate) {
-  //             index = i;
-  //         }
-  //     }
-  //     bnplHistory[_member].rankIndex = index;
-  // }
-
-   
 
 
 }

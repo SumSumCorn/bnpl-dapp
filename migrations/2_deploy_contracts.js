@@ -9,6 +9,8 @@ const Members = artifacts.require("Members")
 const Merchants = artifacts.require("Merchants")
 
 const Package = artifacts.require("Package")
+const Installment = artifacts.require("Installment")
+
 //const usingOraclize = artifacts.require("usingOraclize")
 //const GetPrice = artifacts.require("GetPrice")
 
@@ -25,8 +27,10 @@ module.exports = async function(deployer) {
 
   await deployer.deploy(Bnpl)
 
-  //await deployer.deploy(Members, Bnpl)
-  //await deployer.deploy(Merchants, Bnpl)
+  await deployer.deploy(Members, Bnpl.address)
+  await deployer.deploy(Merchants, Bnpl.address)
+
+  
 
   //await deployer.deploy(Package, 'Channel', 1)
 

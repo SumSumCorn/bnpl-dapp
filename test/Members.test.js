@@ -2,17 +2,26 @@ import { tokens, ether, EVM_REVERT, ETHER_ADDRESS } from './helpers'
 
 const Members = artifacts.require('./Members')
 const Bnpl = artifacts.require('./Bnpl')
+
 require('chai')
   .use(require('chai-as-promised'))
   .should()
 
 contract('Members', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
+  let bnpl
   let members
   let result
 
+  const RANK = {
+    BRONZE: 0,
+    SILVER: 1,
+    GOLD: 2
+  }
+
+
   beforeEach(async () => {
-    bnpl = await Bnpl.new({bnplCompany})
-    members = await Members.new(bnpl, {from:bnplCompany})
+    bnpl = await Bnpl.new({ from:bnplCompany })
+    members = await Members.new(bnpl.address, { from:bnplCompany })
   })
 
   describe('creation', async () => {
@@ -26,8 +35,10 @@ contract('Members', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) =
 
   describe('deployment', () => {
     it('check contract owner', async () => {
-      result = await members.owner()
+      result = await members.owner1()
       result.should.equal(bnplCompany)
+      result = await members.owner2()
+      result.should.equal(bnpl.address)
     })
   })
 
@@ -48,12 +59,40 @@ contract('Members', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) =
         { from:bnplCompany })
     })
     it('check init correctly', async () => {
-      let info1, info2, info3, info4, info5
-      info1, info2, info3, info4, info5 = await members.getMemberinfo(buyer)
-      //console.log(info1)
-      //info1.toString().should.equal(_name)
-      assert.typeOf(info1, 'string')
+      let result = await members.memberInfos(buyer)
+      result.name.should.equal(_name)
+      result.socialNumber.should.equal(_socialNumber)
+      result.phoneNumber.should.equal(_phoneNumber)
+      result.bankName.should.equal(_bankName)
+      result.accountNumber.should.equal(_accountNumber)
     })
+    // event
+
+  })
+
+  describe('member rank update', () => {
+    beforeEach(async () => {
+      await members.updateMemberBnpls(buyer,tokens(500))
+      await members.updateMemberBnpls(buyer,tokens(500))
+    })
+
+    it('check it becomes bronze', async () => {
+      result = await members.memberBnpls(buyer)
+      //console.log(result)
+      result.rank.toNumber().should.equal(RANK.BRONZE)
+
+    })
+
+
+    // it('check it becomes silver', () => {
+        
+        // emit check
+    // })
+
+    // it('check it becomes gold', () => {
+      
+        // emit check
+    // })
 
   })
 })
