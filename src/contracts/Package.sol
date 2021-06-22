@@ -20,22 +20,22 @@ contract Package {
     uint256 timestamp
   );
 
-  constructor(string memory _name, uint256 _trackingNum) public {
+  constructor(address _manager, string memory _name, uint256 _trackingNum) public {
     name = _name;
     trackingNum = _trackingNum;
 
     // Make deployer manager
-    manager = msg.sender;
+    manager = _manager;
 
     status = STATUSES.CREATED;
 
     // Log history
-    emit State("CREATE", msg.sender, msg.sender, now);
+    emit State("CREATE", _manager, _manager, now);
   }
 
-  function send(address _to) public {
+  function send(address _from, address _to) public {
     // Must be manager to send
-    require(msg.sender == manager);
+    require(_from == manager);
 
     // Cannot send to self
     require(_to != manager);
@@ -51,12 +51,12 @@ contract Package {
     manager = _to;
 
     // Log history
-    emit State("SEND", msg.sender, _to, now);
+    emit State("SEND", _from, _to, now);
   }
 
-  function receive() public {
+  function receive(address _to) public {
     // Must be manager to receive
-    require(msg.sender == manager);
+    require(_to == manager);
 
     // Must be in "SENT" status
     // Cannot be "CREATED" or "RECEIVED"
@@ -66,6 +66,6 @@ contract Package {
     status = STATUSES.RECEIVED;
 
     // Log history
-    emit State("RECEIVE", msg.sender, msg.sender, now);
+    emit State("RECEIVE", _to, _to, now);
   }
 }

@@ -34,6 +34,7 @@ module.exports = async function(deployer) {
   
   await deployer.deploy(usingOraclize)
   await deployer.deploy(GetPrice)
+  
   //await deployer.deploy(Package, 'Channel', 1)
 
   // const feeAccount = accounts[0]

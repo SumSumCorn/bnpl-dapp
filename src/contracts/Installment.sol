@@ -32,6 +32,9 @@ contract Installment is Owned {
     paybackCost = remainCost.div(remainCnt);
     nextInstallDeadline = _timestamp;
 
+    remainFee = 0;
+    nextFeeDeadline = 0;
+
     avail = true;
 	}
 
@@ -72,6 +75,10 @@ contract Installment is Owned {
     return nextInstallDeadline;
   }
 
+  function getNextFeeDeadline() public view onlyAvail returns(uint) {
+    return nextFeeDeadline;
+  }
+
   // 한 달 후
   function setNextInstallDeadline(uint _timestamp) public onlyAvail{
     nextInstallDeadline = _timestamp;
@@ -84,7 +91,7 @@ contract Installment is Owned {
 
 
   function isLate() public view onlyAvail returns(bool) {
-    return remainFee >= 0;
+    return remainFee > 0;
   }
 
   // 정산하기
@@ -93,8 +100,8 @@ contract Installment is Owned {
     // 정산 완료
     remainCnt = remainCnt.sub(1);
     if(remainCnt == 0){
-      remainCost = remainCost.sub(paybackCost);
-    }else{
+      remainCost = 0;
+    } else {
       remainCost = remainCost.sub(paybackCost);
     }
 
@@ -104,13 +111,7 @@ contract Installment is Owned {
   function balanceLateFee() public onlyOwner onlyAvail {
 
     // 정산 완료
-    remainCnt = remainCnt.sub(1);
-    if(remainCnt == 0){
-      remainCost = remainCost.sub(paybackCost);
-    }else{
-      remainCost = remainCost.sub(paybackCost);
-    }
-
+    remainFee = 0;
   }
 
   function raiseLatefee() public onlyAvail {

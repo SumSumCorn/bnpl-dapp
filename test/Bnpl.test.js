@@ -14,7 +14,7 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
+contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, deliveryMan]) => {
   let token
   let exchange
   let datetime
@@ -44,23 +44,16 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
       CREATED: 0,    // 계약생성 -> installment 계약생성
       LOADED: 1,     // package 계약생성
       DONE: 2,       // 완전히 1 2 way 끝남
-      PROCESSING: 3, // installment 진행중
-      FINISHED: 4,
-      CANCELLED: 5   // package 계약 생성 안함 -> initcost 환불 -> 주문취소
+      PROCESSING: 3, // package, installment 진행중
+      ONLYLOAN: 4,    // installment, latefee 만 진행중
+      FINISHED: 5,   // 다 끝난 경우
+      CANCELLED: 6   // package 계약 생성 안함 -> initcost 환불 -> 주문취소
   }
 
   beforeEach(async () => {
     // Deploy token
     token = await Token.new()
     datetime = await Datetime.new()
-    //members = await Members.new(bnplCompany)
-    //merchants = await Merchants.new(bnplCompany)
-
-    //await merchants.registerSeller(buyer, { from:bnplCompany })
-    //await merchants.setProduct('Channel', 'no5', tokens(1000000), { from:seller })
-
-    // // Transfer some tokens to user1
-    // token.transfer(buyer, tokens(100), { from: bnplCompany })
 
     exchange = await Exchange.new()
 
@@ -189,6 +182,12 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
 
     })
 
+    it('checks installment order  is correct', async () => {
+      let result2, result3
+
+      result = await bnpl.orders(orderId)
+    })
+
     it('checks after order1 is made', async () => {
       result = await exchange.balanceOf(token.address, buyer)
       result.toString().should.equal(tokens(500).toString())
@@ -219,132 +218,52 @@ contract('Bnpl', ([bnplCompany, feeAccount, payee, buyer, seller, carrier]) => {
       })
     })
 
-    describe('simulate payback protocol', () => {
+    describe('simulate delivery and payback protocol', () => {
       beforeEach(async () => {
-        result = await bnpl.acceptOrder(1,'channel','20210622', { from:seller })
+        result = await bnpl.acceptOrder(1, seller, 'channel','20210622', { from:seller })
         result = await bnpl.orderTimeSub(1)
         result = await bnpl.manageWay1and2(prodNum)
         result = await bnpl.installTimeSub(orderId)
       })
 
-
-      it('when buyer installment correctly', async () => {
-        result = await bnpl.payback(orderId)
+      describe('delivery protocol', () => {
+        it('seller post package to delivery man', async () => {
+          result = await bnpl.deliverPackage(orderId, seller,deliveryMan)
+          result = await bnpl.receivePackage(orderId, deliveryMan)
+          result = await bnpl.deliverPackage(orderId, deliveryMan, buyer)
+          result = await bnpl.receivePackage(orderId, buyer)
+          result = await bnpl.orders(orderId)
+          result.orderStat.toString().should.equal(ORDERSTATS.ONLYLOAN.toString())
+        })
       })
 
-      it('when buyer get debt', async() => {
+      describe('payback protocol', () => {
 
-      })
+        describe('success', () => {
+          beforeEach(async () => {
+            result = await bnpl.payback(orderId)
+          })
 
+          it('when buyer installment correctly', async () => {
+            result = await bnpl.orders(1)
 
-      it(' ready ', async () => {
-        //result = await bnpl.execPayback(orderId)
+          })
 
+          it('finish bnpl process ', async () => {
+            result = await bnpl.orders(1)
+            result.orderStat.toString().should.equal(ORDERSTATS.FINISHED.toString(), 'order is not finished')
+            result = await members.memberBnpls(buyer)
+            result.stat.toString().should.equal(BNPLSTAT.NONE.toString(), 'stat does not changed!')
+          })
+
+          it('update member rank', async () => {
+            result = await members.memberBnpls(buyer)
+            result.rank.toString().should.equal(RANK.SILVER.toString())
+            result.times.toString().should.equal('1')
+            result.sum.toString().should.equal(tokens(1000).toString())
+          })
+        })
       })
     })
-
-    // describe('simulate delivery protocol', () => {
-    //   it('package is being deliverd', async () => {
-
-    //   })
-
-    //   it('package has arrived', async () => {
-
-    //   })
-
-    // })
-
   })
 })
-    // it('tracks the newly created order', async () => {
-    //   const orderCount = await bnpl.orderCount()
-    //   orderCount.toString().should.equal('1')
-
-    //   const order = await bnpl.orders('1')
-    //   order.id.toString().should.equal('1', 'id is correct')
-    //   order.buyer.should.equal(buyer, 'buyer is correct')
-    //   order.seller.should.equal(seller, 'seller is correct')
-    //   order.token.should.equal(token.address, 'token is correct')
-    //   order.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
-    //   order.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
-    //   order.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
-    //   order.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-    // })
-
-    // it('emits an "Order" event', () => {
-    //   const log = result.logs[0]
-    //   log.event.should.eq('Order')
-    //   const event = log.args
-    //   event.id.toString().should.equal('1', 'id is correct')
-    //   event.buyer.should.equal(buyer, 'buyer is correct')
-    //   event.seller.should.equal(seller, 'seller is correct')
-    //   event.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
-    //   event.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
-    //   event.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
-    //   event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-    // })
-    //})
-  
-  // describe('order actions', () => {
-  //   let result
-
-  //   beforeEach(async () => {
-  //     // // user1 deposits ether only
-  //     // await exchange.depositEther({ from: buyer, value: ether(1) })
-  //     // give tokens to buyer
-  //     await token.transfer(buyer, tokens(100), { from: bnplCompany })
-
-  //     // buyer deposits tokens only
-  //     await token.approve(bnpl.address, tokens(100), { from: buyer })
-  //     await bnpl.depositToken(token.address, tokens(100), { from: buyer })
-
-      
-  //     // buyer fills order
-  //     result = await bnpl.makeBnplOrder(seller, token.address, tokens(10), tokens(5), 1, { from : buyer })
-  //   })
-
-  //   describe('filling orders', () => {
-  //     let result
-  //     describe('success', () => {
-  //       let targetNumber
-  //       it('BNPL company fills orders', async () => {
-  //         targetNumber = 1
-  //         result = await bnpl.fillBnplOrder(targetNumber)
-
-  //         const orderFilled = await bnpl.orderFilled(1)
-  //         orderFilled.should.equal(true)
-
-  //         let balance
-  //         // buyer sub init cost
-  //         balance = await bnpl.balanceOf(token.address, buyer)
-  //         balance.toString().should.equal(tokens(95).toString(), 'buyer sub tokens')
-  //         // defi company gets init cost 
-  //         balance = await bnpl.balanceOf(token.address, feeAccount)
-  //         balance.toString().should.equal(tokens(5).toString(), 'feeAccount get tokens')
-  //       })
-
-  //       it('check trade 1', async () => {
-
-  //         // defi company gets init cost 
-  //         //balance = await bnpl.balanceOf(token.address, feeAccount)
-  //         //balance.toString().should.equal(tokens(5).toString(), 'feeAccount get tokens')
-
-  //         //tokens
-
-  //       })
-
-  //       it('emits a "Fill" event', () => {
-  //         const log = result.logs[0]
-  //         log.event.should.eq('Fill')
-  //         const event = log.args
-  //         event.id.toString().should.equal('1', 'id is correct')
-  //         event.buyer.should.equal(buyer, 'buyer is correct')
-  //         event.seller.should.equal(seller, 'seller is correct')
-  //         event.totalPrice.toString().should.equal(tokens(10).toString(), 'totalPrice is correct')
-  //         event.initcost.toString().should.equal(tokens(5).toString(), 'initcost is correct')
-  //         event.installmentPeriod.toString().should.equal('1', 'amountGive is correct')
-  //         event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
-  //       })
-  //     })
-  //   })
-  // })

@@ -36,8 +36,9 @@ contract Bnpl is Owned {
       CREATED,    // 계약생성 -> installment 계약생성
       LOADED,     // package 계약생성
       DONE,       // 완전히 1 2 way 끝남
-      PROCESSING, // installment 진행중
-      FINISHED,
+      PROCESSING, // package, installment 진행중
+      ONLYLOAN,   // installment, latefee 만 진행중
+      FINISHED,   // 다 끝난 경우
       CANCELLED   // package 계약 생성 안함 -> initcost 환불 -> 주문취소
   }
 
@@ -57,23 +58,6 @@ contract Bnpl is Owned {
   mapping(uint => _Order) public orders;
   uint public orderCount;
 
-  //mapping(uint => bool) public orderCancelled;
-  //mapping(uint => bool) public orderFilled;
-
-  //STATUSES public status;
-
-
-
-  event Fill(
-      uint    id,
-      address buyer,
-      address seller,
-      address tokenKind,
-      uint    totalPrice,
-      uint    initcost,
-      uint    installmentPeriod,
-      uint    timestamp
-  );
   event Order(
       uint    id,
       address buyer,
@@ -83,30 +67,12 @@ contract Bnpl is Owned {
       uint    installmentPeriod,
       uint    timestamp
   );
-  event Cancel(
-      uint    id,
-      address buyer,
-      address seller,
-      address tokenKind,
-      uint    totalPrice,
-      uint    initcost,
-      uint    installmentPeriod,
-      uint    timestamp
-  );
-  event Trade(
-      uint    id,
-      address buyer,
-      address seller,
-      address tokenKind,
-      uint    totalPrice,
-      uint    initcost,
-      uint    installmentPeriod,
-      uint    timestamp
-
-  );
 
   event BlackListed(address indexed target);
   event DeleteFromBlacklist(address indexed target);
+
+  event FinishBnplOrder(uint);
+  event Late(uint);
 
   struct _Order {
     uint        id;
@@ -216,15 +182,15 @@ contract Bnpl is Owned {
   }
 
   function makeInstallmentCon(uint _initCost, uint _totalPrice, uint _installmentCnt, uint _nextTimestamp) public returns(Installment) {
-    return new Installment(_initCost, _totalPrice, _installmentCnt, _nextTimestamp);
+    return  new Installment(_initCost, _totalPrice, _installmentCnt, _nextTimestamp);
   }
 
-  function makePackageCon(string memory _name, uint256 _trackingNum) public returns(Package) {
-    return new Package(_name, _trackingNum);
+  function makePackageCon(address _from, string memory _name, uint256 _trackingNum) public returns(Package) {
+    return new Package(_from, _name, _trackingNum);
   }
 
   // seller 가 주문을 보고 패키지를 등록함
-  function acceptOrder(uint _id, string memory _name, uint _trackingNum) public {
+  function acceptOrder(uint _id, address _from, string memory _name, uint _trackingNum) public {
     // 유효한 주문 번호여야 한다.
     require(_id <= orderCount);
 
@@ -233,7 +199,7 @@ contract Bnpl is Owned {
     //msg.sender 가 _id 의 seller 와 동일하다.
     require(msg.sender == order.seller);
 
-    order.packageCon = makePackageCon(_name, _trackingNum);
+    order.packageCon = makePackageCon(_from, _name, _trackingNum);
 
     order.orderStat = ORDERSTATS.LOADED;
 
@@ -246,7 +212,9 @@ contract Bnpl is Owned {
     _Order storage order = orders[_id];
 
     uint timeMachine = order.timestamp;
-    timeMachine = dateTime.subDays(timeMachine, 2);
+    timeMachine = dateTime.subDays(timeMachine, 1);
+    timeMachine = dateTime.subHours(timeMachine, 12);
+
     order.timestamp = timeMachine;
   }
 
@@ -260,6 +228,7 @@ contract Bnpl is Owned {
 
     uint timeMachine = curInstall.getNextInstallDeadline();
     timeMachine = dateTime.subMonths(timeMachine, 1);
+    timeMachine = dateTime.subHours(timeMachine, 12);
     
     curInstall.setNextInstallDeadline(timeMachine);
   }
@@ -310,6 +279,35 @@ contract Bnpl is Owned {
     exchange.depositTokenTransfer(order.tokenKind, payee, order.buyer, order.initCost);
   }
 
+  function deliverPackage(uint _id, address _from, address _to) public {
+    require(_id <= orderCount);
+
+    _Order storage order = orders[_id];
+
+    Package curPackage = order.packageCon;
+
+    curPackage.send(_from, _to);
+
+  }
+
+  function receivePackage(uint _id, address _to) public {
+    require(_id <= orderCount);
+
+    _Order storage order = orders[_id];
+
+    Package curPackage = order.packageCon;
+
+    curPackage.receive(_to);
+
+    if(_to == order.buyer){
+      // finish delivery
+      order.orderStat = ORDERSTATS.ONLYLOAN;
+    }
+
+  }
+
+
+
   function payback(uint _id) public {
     require(_id <= orderCount);
 
@@ -317,8 +315,11 @@ contract Bnpl is Owned {
 
     Installment curInstallCon = order.installmentCon;
 
-    require(orders[_id].orderStat == ORDERSTATS.DONE);
-    require(curInstallCon.getNextInstallDeadline() < now, 'must in time!');
+    require(orders[_id].orderStat == ORDERSTATS.DONE 
+      || orders[_id].orderStat == ORDERSTATS.PROCESSING 
+      || orders[_id].orderStat == ORDERSTATS.ONLYLOAN);
+
+    //require(curInstallCon.getNextInstallDeadline() < now, 'must in time!');
 
     // uint year; uint month; uint day;
     // uint curYear; uint curMonth; uint curDay;
@@ -326,7 +327,7 @@ contract Bnpl is Owned {
     // (year, month, day) = dateTime.timestampToDate(curInstallCon.getNextInstallDeadline());
     // (curYear, curMonth, curDay) = dateTime.timestampToDate(now);
 
-    //require(year == curYear && month == curMonth && day == curDay, 'must in day!');
+    // require(year == curYear && month == curMonth && day == curDay, 'must in day!');
 
     uint paybackCost = curInstallCon.getPaybackCost();
     uint lateFeeCost = curInstallCon.getLateFeeCost();
@@ -344,7 +345,14 @@ contract Bnpl is Owned {
           //정상적으로 갚음
           exchange.depositTokenTransfer(order.tokenKind, order.buyer, payee, paybackCost) ;
           curInstallCon.balanceIntallment();
+
+          // BNPL 마무리
           order.orderStat = ORDERSTATS.FINISHED;
+          members.setMemberBnplStat(order.buyer, uint(BNPLSTAT.NONE));
+          // update memberbnpls
+          members.updateMemberBnpls(order.buyer, order.totalPrice);
+
+          emit FinishBnplOrder(order.id);
         }else{
           // 마지막에서 연체
           curInstallCon.raiseLatefee();
@@ -373,11 +381,21 @@ contract Bnpl is Owned {
       // 연체한 경우
 
       if(exchange.balanceOf(order.tokenKind, order.buyer) >= lateFeeCost){
+
+
         // 다 갚은 경우
+        // 연체료 없앰
+        curInstallCon.balanceLateFee();
+        // 연체료 전송
         exchange.depositTokenTransfer(order.tokenKind, order.buyer, payee, lateFeeCost);
+        // 맴버 상태 변경
         members.setMemberBnplStat(order.buyer, uint(BNPLSTAT.PROCESSING));
 
+        //nextInstallTime = dateTime.addMonths(curInstallCon.getNextFeeDeadline(), 1);
+
         curInstallCon.setNextInstallDeadline(nextInstallTime);
+        emit Late(order.id);
+
       } else{
         // 또못 갚은 경우
         curInstallCon.raiseLatefee();

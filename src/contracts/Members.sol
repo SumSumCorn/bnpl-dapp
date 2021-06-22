@@ -73,7 +73,7 @@ contract Members is TwoOwned {
       rank[uint(RANK.SILVER)] = MemberRank({
               name: "Silver",
               times: 1,
-              sum: 1000  * (money),
+              sum: 500  * (money),
               rate: 1500  * (money),
               installmentCount: 5
       });
@@ -123,17 +123,13 @@ contract Members is TwoOwned {
   }
 
   function getMemberInstallments(address _member) public view returns(uint) {
-    uint _cnt;
-
     if(getMemberRank(_member) == RANK.BRONZE){
-      _cnt = 1;
-    }else if(getMemberRank(_member) == RANK.SILVER){
-      _cnt = 5;
-    }else{
-      _cnt = 10;
+      return 1;
+    } else if(getMemberRank(_member) == RANK.SILVER){
+      return 5;
+    } else{
+      return 10;
     }
-
-    return _cnt;
   }
 
   function canMemberBnpl(address _buyer) public view returns(bool) {
